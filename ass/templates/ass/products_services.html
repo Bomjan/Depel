@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products & Services</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styleMyAss.css' %}">
+</head>
+<body>
+
+    <header>
+        <h1>Manage Products & Services</h1>
+        <nav>
+            <ul>
+                <li><a href="/ass/dashboard/">Back to Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Products & Services</h2>
+        <p>Manage all company products and services here.</p>
+
+        <section>
+            <h3>List of Products & Services</h3>
+            <ul class="product-list">
+                {% for item in products_services %}
+                    <li class="product-item">
+                        <div class="main-image">
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" width="200">
+                        </div>
+                        <div class="product-details">
+                            <h4>{{ item.name }}</h4>
+                            <div class="specifications">
+                                <p><strong>Brand:</strong> {{ item.brand }}</p>
+                                <p><strong>Power:</strong> {{ item.power }}</p>
+                                <p><strong>Fuel Type:</strong> {{ item.fuel }}</p>
+                            </div>
+                            
+                            <!-- Additional Images -->
+                            <div class="part-images">
+                                {% for part in item.parts.all %}
+                                    <img src="{{ part.image.url }}" alt="Part image" width="100">
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Delete Button -->
+                        <form method="post" class="delete-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_product_service" value="{{ item.id }}">
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h4>Add a New Product or Service</h4>
+            <form method="post" enctype="multipart/form-data" class="product-form">
+                {% csrf_token %}
+                
+                <!-- Main Product Fields -->
+                <div class="form-section">
+                    {{ product_service_form.as_p }}
+                </div>
+
+                <!-- Additional Images Field -->
+                <div class="form-section">
+                    <label>Additional Part Images:</label>
+                    <input type="file" name="images" multiple accept="image/*">
+                </div>
+
+                <button type="submit" name="add_product_service" class="add-btn">Add Product</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

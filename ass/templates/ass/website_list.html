@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website List</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styleMyAss.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="/ass/dashboard/">Dashboard</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>View Websites</h2>
+        <p>Here you can view different websites, including the frontend app of this website.</p>
+
+        <!-- Display the websites -->
+        <section>
+            <h3>List of Websites</h3>
+            <ul>
+                {% for website in websites %}
+                    <li>
+                        <a href="{{ website.url }}" target="_blank">{{ website.name }}</a> 
+
+                        <!-- Delete Button -->
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_website" value="{{ website.id }}">
+                            <button type="submit" class="delete-btn">Remove</button>
+                        </form>
+                    </li>
+                {% empty %}
+                    <p>No websites added yet.</p>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Form to add a new website -->
+        <section>
+            <h4>Add a New Website</h4>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" name="add_website" class="add-btn">Add Website</button>
+            </form>
+        </section>
+    </main>
+
+</body>
+</html>

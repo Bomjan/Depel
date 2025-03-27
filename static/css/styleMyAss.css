@@ -1,0 +1,368 @@
+/* styleMyAss.css */
+
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    padding-top: 80px; /* Space for fixed header */
+}
+
+:root {
+    --primary-color: #2C3E50;      /* Dark Navy */
+    --secondary-color: #3498DB;    /* Friendly Blue */
+    --accent-color: #E74C3C;       /* Clear Red */
+    --background-color: #FFFFFF;   /* Pure White */
+    --text-color: #2C3E50;         /* Dark Navy */
+    --nav-text: #FFFFFF;           /* White */
+}
+
+/* Header and Navigation */
+header {
+    background-color: var(--primary-color);
+    padding: 1rem 0;
+}
+
+nav ul li a {
+    color: var(--nav-text);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+nav ul li a:hover {
+    background-color: var(--secondary-color);
+    color: var(--nav-text);
+    text-decoration: none;
+}
+
+nav ul li a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Rest of the styles remain the same */
+/* Header Styles */
+header {
+    background-color: #e0db41;
+    color: #792424;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 15px 0 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #792424;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+    /*background-color: rgba(121, 36, 36, 0.8);*/
+    color: white;
+}
+
+/* Carousel Management Styles */
+.carousel-management {
+    padding: 20px;
+    background: white;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 20px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-slides {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide {
+    min-width: 100%;
+    position: relative;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.carousel-nav {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-nav:hover {
+    background: rgba(121, 36, 36, 0.9);
+    transform: scale(1.1);
+}
+
+/* Main Content Styles */
+main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Management List Styles */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 15px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+li:hover {
+    transform: translateY(-3px);
+}
+
+li img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+/* Form Styles */
+form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding-top: 120px;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    li {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    li img {
+        margin: 0 0 15px 0;
+    }
+
+    .carousel-image {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-image {
+        height: 200px;
+    }
+    
+    .carousel-nav {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Modify the existing list item styles */
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Add this */
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    gap: 20px; /* Add spacing between elements */
+}
+
+/* Add this new rule for the delete form */
+li form {
+    margin-left: auto; /* Pushes the form to the right */
+}
+
+/* For mobile responsiveness */
+@media screen and (max-width: 768px) {
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    li form {
+        margin-left: 0;
+        align-self: flex-end; /* Right-align in mobile view */
+    }
+    
+    .delete-btn {
+        margin-top: 10px;
+    }
+}
+
+
+/* Products & Services Styles */
+.product-list {
+    list-style: none;
+    padding: 0;
+}
+
+.product-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: start;
+}
+
+.main-image img {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.product-details {
+    flex-grow: 1;
+}
+
+.part-images {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.form-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    border: 1px solid #eee;
+}
+
+.delete-form {
+    margin-top: 15px;
+}
+
+/* Button Styles */
+.add-btn, .delete-btn {
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}

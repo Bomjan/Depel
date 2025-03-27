@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styleMyAss.css' %}">
+</head>
+<body>
+
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="/ass/dashboard/">Dashboard</a></li>
+                <li><a href="/ass/manage_carousel/">Carousel</a></li>
+                <li><a href="/ass/products_services/">Products & Services</a></li>
+                <!-- Please activate this if you want to add this navigation to this dashboard. In this ecommerce page, please consider including add/delete function for both machines&parts. Also dont forget to include carousel catalogues and order management dashboard. Thank you :) -->
+                <!-- <li><a href="/ass/ecommerce/">Ecommerce</a></li> -->
+                <li><a href="/ass/website-list/">View Sites</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Welcome to the Admin Dashboard</h2>
+        <p>Here you can manage the Board of Directors, Management Team, and Employees.</p>
+
+        <section>
+            <h3>Board of Directors</h3>
+            <ul>
+                {% for member in board_members %}
+                    <li>
+                        <img src="{{ member.image.url }}" alt="{{ member.name }}" width="100">
+                        <strong>{{ member.name }}</strong> - {{ member.position }}
+                        <p>{{ member.bio }}</p>
+                        
+                        <!-- Add Delete Button -->
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_board_member" value="{{ member.id }}">
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h4>Add a New Board Member</h4>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ board_member_form.as_p }}
+                <button type="submit" name="add_board_member" class="add-btn">Add Board Member</button>
+            </form>
+        </section>
+
+        <section>
+            <h3>Management Team</h3>
+            <ul>
+                {% for member in management_team %}
+                    <li>
+                        <img src="{{ member.image.url }}" alt="{{ member.name }}" width="100">
+                        <strong>{{ member.name }}</strong> - {{ member.position }}
+                        <p>{{ member.bio }}</p>
+
+                        <!-- Add Delete Button -->
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_management_member" value="{{ member.id }}">
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h4>Add a New Management Team Member</h4>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ management_member_form.as_p }}
+                <button type="submit" name="add_management_member" class="add-btn">Add Management Team Member</button>
+            </form>
+        </section>
+
+        <section>
+            <h3>Employees</h3>
+            <ul>
+                {% for employee in employees %}
+                    <li>
+                        
+                        <img src="{{ employee.image.url }}" alt="{{ employee.name }}" width="100">
+                        <strong>{{ employee.name }}</strong> - {{ employee.position }}
+                        <p>{{ employee.bio }}</p>
+                        
+
+                        <!-- Add Delete Button -->
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_employee" value="{{ employee.id }}">
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h4>Add a New Employee</h4>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ employee_form.as_p }}
+                <button type="submit" name="add_employee" class="add-btn">Add Employee</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>
