@@ -91,18 +91,39 @@ def products_services(request):
         if "add_product_service" in request.POST:
             product_form = ProductServiceForm(request.POST, request.FILES)
             parts_form = ProductPartsForm(request.POST, request.FILES)
-            
+
             if product_form.is_valid():
                 product = product_form.save()
-                
-                # Handle multiple parts images directly from request.FILES
+
+                # Handle multiple parts images
                 if parts_form.is_valid():
-                    for img in request.FILES.getlist('images'):  # Field name is 'images'
+                    for img in request.FILES.getlist('images'):
                         ProductParts.objects.create(product=product, image=img)
-                
+
                 return redirect('ass:products_services')
 
-        # ... rest of your delete handling ...
+        elif "delete_product_service" in request.POST:
+            product_id = request.POST.get("delete_product_service")
+            
+            try:
+                product = ProductService.objects.get(id=product_id)
+                
+                # Delete all related ProductParts first
+                product.parts.all().delete()
+                
+                # Delete the ProductService itself
+                product.delete()
+                
+            except ProductService.DoesNotExist:
+                pass  # If product not found, do nothing
+
+            return redirect('ass:products_services')
+
+    return render(request, 'ass/products_services.html', {
+        "products_services": products_services,
+        "product_service_form": product_service_form,
+        "parts_form": parts_form,
+    })
 
     return render(request, 'ass/products_services.html', {
         "products_services": products_services,
