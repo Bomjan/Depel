@@ -1,12 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-</head>
-<body>
-    <p>This is about us page</p>
-    
+{% extends 'base.html'%}
+{% load static%}
+{% block extra_head%}
+    <link rel="stylesheet" href="{% static 'css/styleMyFaceInfo.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+{% block content%}
+<body class="info">
+    <div class="top-space">
+
+    </div>
+
+    <div class="about-us-container">
+        <!-- Company Overview -->
+        <section class="company-overview">
+            <h1>Depel Agro Tech Private Limited <a href="/people" class = "know-people"><i class="fas fa-users"></i>Know People</a></h1>
+            <p>The company was established in 2019 with the objective of promoting farm mechanization in small scale to support rural farmers in reducing labour and labour cost...</p>
+        </section>
+        
+        <!-- Line of Business -->
+        <section class="line-of-business">
+            <h2>Our Line of Business</h2>
+            <ul>
+                <li class="business-item">
+                    <img src="{% static 'images/img1.png' %}" alt="Sales and Service">
+                    Providing 3S (Sales, Services & Spare Parts) for agricultural machinery, equipment & tools
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img2.png' %}" alt="Logistics">
+                    Global clearing and forwarding, shipping and logistics
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img3.png' %}" alt="Mini Tiller">
+                    Mini Tiller Assembling & Accessories Fabrication
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img4.png' %}" alt="Training">
+                    Training and Development
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img5.png' %}" alt="Pharmaceutical Goods">
+                    Trading Pharmaceutical, Medical & Orthopaedic Goods
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img6.png' %}" alt="Lubricants">
+                    Wholesale of Lubricants
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img7.png' %}" alt="Construction">
+                    Construction
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img8.png' %}" alt="Ticketing">
+                    Ticketing Agent
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img9.png' %}" alt="ICT Business">
+                    ICT Business (Trading, development and implementation of software, Security Solution, Electronic Components, etc.)
+                </li>
+                <li class="business-item">
+                    <img src="{% static 'images/img10.png' %}" alt="Travel">
+                    Travel Agent
+                </li>
+            </ul>
+        </section>
+        
+        
+        <!-- Organization Structure -->
+        <section class="organization-structure">
+            <h2>Organization Structure</h2>
+            <p>Corporate Office is located at Babena, Thimphu, and Regional Office at Trashigang with Sales and Service Outlets at:</p>
+            <ul>
+                <li><i class="fas fa-map-marker-alt"></i> Doksum</li>
+                <li><i class="fas fa-map-marker-alt"></i> Trashiyangtse</li>
+                <li><i class="fas fa-map-marker-alt"></i> Gorgan</li>
+                <li><i class="fas fa-map-marker-alt"></i> Lhuntse</li>
+                <li><i class="fas fa-map-marker-alt"></i> Dewathang</li>
+                <li><i class="fas fa-map-marker-alt"></i> Samdrupjogkhar</li>
+                <li><i class="fas fa-map-marker-alt"></i> Wamling</li>
+                <li><i class="fas fa-map-marker-alt"></i> Zhemgang</li>
+            </ul>
+            <div class="organogram">
+                <img src="{% static 'images/Organogram.png'%}" alt="Organogram Picture">
+            </div>
+        </section>        
+        
+        <!-- Vision & Mission -->
+        <section class="vision-mission">
+            <h2 class = "no-underline">Vision & Mission</h2>
+            <div class="vision">
+                <h3>Vision</h3>
+                <p>To provide solutions for sustainable agriculture farming through appropriate farm mechanization technology.</p>
+            </div>
+            <div class="mission">
+                <h3>Mission</h3>
+                <ul>
+                    <li>Increase the reach and use of farm machineries by small and marginal farmers</li>
+                    <li>Innovation of farming technologies</li>
+                    <li>Enhance efficiency and reduce cost of production</li>
+                    <li>Skill development of farmers</li>
+                    <li>Research and development of farming technology</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Values -->
+        <section class="values">
+            <h2>Our Values</h2>
+            <ul>
+                <li>We are trained, qualified, and experienced team providing products and services for the benefits of farming communities</li>
+                <li>We hold ourselves accountable for delivering our values in all products and services we provide</li>
+                <li>We are striving for improvement with continuous research & development</li>
+                <li>Our services are characterized by product quality, flexibility, and cost-effectiveness</li>
+            </ul>
+        </section>
+    </div>
 </body>
-</html>
+{% endblock %}

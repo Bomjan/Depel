@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/styleMyFacePeople.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+<!-- Parallax Header -->
+<section class="parallax-header">
+    <div class="header-content">
+        <h1 class="header-title">Meet the Visionaries</h1>
+        <p class="header-subtitle">Driving Agricultural Innovation Forward</p>
+        <div class="scroll-prompt">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+    <div class="header-overlay"></div>
+</section>
+
+<!-- Board Section -->
+<section id="board-of-directors" class="section-board">
+    <div class="section-inner">
+        <h2 class="section-title">Strategic Leadership</h2>
+        <p class="section-description">Guiding our vision with expertise and experience</p>
+        
+        <div class="board-grid">
+            {% for director in board_of_directors %}
+            <div class="director-card {% if forloop.first %}chairman{% endif %}">
+                <div class="card-image">
+                    {% if director.image %}
+                        <img src="{{ director.image.url }}" alt="{{ director.name }}" class="passport-photo" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="passport-photo">
+                    {% endif %}
+                    <div class="card-overlay"></div>
+                    {% if forloop.first %}
+                        <div class="chairman-badge">Chairman</div>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3>{{ director.name }}</h3>
+                    <p class="position">{{ director.role }}</p><br>
+                    <p class="bio">{{ director.bio}}</p>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Management Section -->
+<section id="management-team" class="section-management">
+    <div class="section-inner">
+        <h2 class="section-title">Operational Excellence</h2>
+        <p class="section-description">The driving force behind daily innovation</p>
+        
+        <div class="management-grid">
+            {% for member in management_team %}
+            <div class="management-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-image">
+                            <img src="{{ member.image.url }}" alt="{{ member.name }}" loading="lazy">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="card-details">
+                            <h4>{{ member.name }}</h4>
+                            <p class="position">{{ member.role }}</p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="back-content">
+                            <h4>{{ member.name }}</h4>
+                            <div class="bio-excerpt">{{ member.bio|truncatewords:30 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Employee Section -->
+<section id="employees" class="section-employees">
+    <div class="section-inner">
+        <h2 class="section-title">Innovation Engine</h2>
+        <p class="section-description">Meet the brilliant minds making it happen</p>
+        
+        <div class="employee-masonry">
+            {% for employee in employees %}
+            <div class="employee-card">
+                <div class="card-image">
+                    <img src="{{ employee.image.url }}" alt="{{ employee.name }}" loading="lazy">
+                </div>
+                <div class="card-details">
+                    <h5>{{ employee.name }}</h5>
+                    <p class="position">{{ employee.position }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

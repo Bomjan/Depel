@@ -1,29 +1,29 @@
 from django import forms
 from .models import BoardOfDirector, ManagementTeam, Employee
-from .models import ProductService, ProductParts
+from .models import MiniTiller, ProductParts
 from .models import Website
 from .models import Carousel
 
 class BoardOfDirectorForm(forms.ModelForm):
     class Meta:
         model = BoardOfDirector
-        fields = ['name', 'position', 'image']
+        fields = ['name', 'position', 'bio', 'image']
 
 class ManagementTeamForm(forms.ModelForm):
     class Meta:
         model = ManagementTeam
-        fields = ['name', 'position', 'image']
+        fields = ['name', 'position', 'bio', 'image']
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['name', 'position', 'image']
+        fields = ['name', 'position', 'bio', 'image']
 
 
 # Main product form
-class ProductServiceForm(forms.ModelForm):
+class MiniTillerForm(forms.ModelForm):
     class Meta:
-        model = ProductService
+        model = MiniTiller
         fields = '__all__'
 
 #this is custom widget for multiple image parts reception. 

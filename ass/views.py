@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from .models import BoardOfDirector, ManagementTeam, Employee
 from .forms import BoardOfDirectorForm, ManagementTeamForm, EmployeeForm
 
-from .models import ProductService, ProductParts
-from .forms import ProductServiceForm, ProductPartsForm
+from .models import MiniTiller, ProductParts
+from .forms import MiniTillerForm, ProductPartsForm
 
 from .models import Website  
 from .forms import WebsiteForm 
@@ -83,8 +83,8 @@ def dashboard(request):
 
 @login_required
 def products_services(request):
-    products_services = ProductService.objects.all().prefetch_related('parts')
-    product_service_form = ProductServiceForm()
+    products_services = MiniTiller.objects.all().prefetch_related('parts')
+    product_service_form = MiniTillerForm()
     parts_form = ProductPartsForm()  # Use the updated non-ModelForm
 
     if request.method == "POST":
@@ -106,7 +106,7 @@ def products_services(request):
             product_id = request.POST.get("delete_product_service")
             
             try:
-                product = ProductService.objects.get(id=product_id)
+                product = MiniTiller.objects.get(id=product_id)
                 
                 # Delete all related ProductParts first
                 product.parts.all().delete()
@@ -114,7 +114,7 @@ def products_services(request):
                 # Delete the ProductService itself
                 product.delete()
                 
-            except ProductService.DoesNotExist:
+            except MiniTiller.DoesNotExist:
                 pass  # If product not found, do nothing
 
             return redirect('ass:products_services')

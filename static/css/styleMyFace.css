@@ -2,13 +2,13 @@
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
     background-color: #f8f9fa;
+
 }
 
 /* Header Styles */
 header {
-    background-color: #e0db41;
+    background-image: url(../images/header-backgroung.jpg);
     color: #792424;
     padding: 1rem 0;
     position: fixed;
@@ -44,6 +44,148 @@ nav ul li a {
 
 nav ul li a:hover {
     color: #5a1a1a;
+}
+
+/* Dropdown Core Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    border-radius: 14px;
+    padding: 32px;
+    min-width: 720px;
+    max-width: 90vw;
+    max-height: 75vh;
+    overflow-y: auto;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1000;
+    border: 1px solid #eee;
+}
+
+/* Hover State */
+.dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Grid Layout */
+.dropdown-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+/* Service List Columns */
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.service-list li {
+    padding: 2px 0;
+}
+
+/* Category Styling */
+.category-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Link Styling */
+.service-list a {
+    color: #444;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.25s ease;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: block;
+}
+
+.service-list a:hover {
+    color: #0052cc;
+    background: #f8faff;
+    transform: translateX(6px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: fixed;
+        left: 5%;
+        width: 90%;
+        min-width: unset;
+        padding: 24px;
+    }
+    
+    .dropdown-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    .service-list a {
+        padding: 8px 12px;
+    }
+}
+
+/* Add this to your CSS */
+.dropdown {
+    position: relative;
+    padding-bottom: 15px; /* Creates hover buffer zone */
+}
+
+.dropdown:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    height: 15px; /* Match padding-bottom value */
+}
+
+.dropdown-menu {
+    top: calc(100% + 15px); /* Match hover buffer height */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    pointer-events: all;
+}
+
+/* Keep existing styles but add this transition delay */
+.dropdown-menu {
+    transition-delay: 150ms; /* Gives time to move cursor */
+}
+
+/* Scrollbar Styling */
+.dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
 }
 
 /* Carousel Styles */
@@ -167,8 +309,8 @@ nav ul li a:hover {
 
 /* Footer Styles */
 footer {
-    background: #333;
-    color: white;
+    background-image: url(../images/foot.avif);
+    color: rgb(34, 21, 109);
     padding: 4rem 2rem;
     margin-top: 4rem;
 }
@@ -196,7 +338,7 @@ footer {
 }
 
 .footer-column a {
-    color: white;
+    color: rgb(34, 21, 109);
     text-decoration: none;
 }
 

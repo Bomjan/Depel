@@ -36,3 +36,14 @@ def info(request):
     }
     return render(request, 'face/info.html',context)
 
+
+def people(request):
+    board_of_directors = BoardOfDirector.objects.all()
+    management_team = ManagementTeam.objects.all()
+    employees = Employee.objects.all()
+    
+    return render(request, 'face/people.html', {
+        'board_of_directors': board_of_directors,
+        'management_team': management_team,
+        'employees': employees
+    })

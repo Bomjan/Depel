@@ -1,0 +1,257 @@
+/* General Styles */
+body.info {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Top Space */
+.top-space {
+    height: 90px;
+}
+
+/* Container Styles */
+.about-us-container {
+    width: 95%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Section Styles */
+section {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd; /* Added border for the container lines */
+}
+
+/* Section Titles */
+h1, h2, h3 {
+    color: #4a2e3a;
+    border-bottom: 2px solid #4a2e3a; /* Added underline to section headers */
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+h2 .no-underline{
+    border-bottom: 0;
+}
+
+/* Company Overview */
+.company-overview {
+    border-top: 3px solid #4a2e3a; /* Add top border to Company Overview */
+}
+
+.company-overview h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.company-overview p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+/* button */
+/* Styling for the Know People link as a button with border */
+.know-people {
+    display: inline-flex;
+    align-items: center;
+    color: #4a2e3a;  /* Text color */
+    padding: 0.5rem 1.5rem;  /* Padding for button */
+    font-size: 1rem;  /* Font size */
+    text-align: center;  /* Centering text */
+    text-decoration: none;  /* Remove underline */
+    border: 2px solid #4a2e3a;  /* Border color */
+    border-radius: 25px;  /* Rounded corners */
+    background-color: rgba(0, 0, 0, 0.05);  /* Light background color */
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;  /* Smooth transition effects */
+}
+
+/* Styling for the icon */
+.know-people i {
+    margin-right: 0.5rem;  /* Space between icon and text */
+    font-size: 1.2rem;  /* Size of the icon */
+}
+
+/* Hover effect for the button */
+.know-people:hover {
+    background-color: #f1f1f1;  /* Light grey for hover */
+    color: #792424;  /* Change text color on hover */
+    transform: translateY(-3px);  /* Slight lift effect on hover */
+}
+
+/* Align the button to the right of the heading */
+.company-overview h1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Focus effect for accessibility */
+.know-people:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.8);  /* Focus border */
+}
+
+
+
+/* Line of Business Section */
+.line-of-business {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.line-of-business h2 {
+    font-size: 1.8rem;
+    color: #4a2e3a;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #4a2e3a;
+    padding-bottom: 0.5rem;
+}
+
+/* Styling for the list items */
+.line-of-business ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.line-of-business .business-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1rem;
+}
+
+.line-of-business .business-item img {
+    width: 40px;  /* Adjust icon size */
+    height: 40px;
+    margin-right: 1rem;  /* Space between image and text */
+}
+
+.line-of-business .business-item:last-child {
+    border-bottom: none;  /* Remove bottom border for the last item */
+}
+
+
+/* Organization Structure Section */
+.organization-structure {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.organization-structure h2 {
+    font-size: 1.8rem;
+    color: #4a2e3a;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #4a2e3a;
+    padding-bottom: 0.5rem;
+}
+
+.organization-structure p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* List of Outlets */
+.organization-structure ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.8;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* Create two columns */
+    gap: 1rem;  /* Add space between items */
+}
+
+.organization-structure li {
+    position: relative;
+    padding-left: 25px;  /* Space for custom bullet */
+}
+
+/* FontAwesome Icon as Bullet */
+.organization-structure li i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #4a2e3a;  /* Customize the color */
+    font-size: 18px;   /* Adjust the size of the icon */
+}
+
+/* Organogram Image */
+.organization-structure .organogram {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.organization-structure .organogram img {
+    width: 80%;
+    max-width: 700px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Vision & Mission */
+.vision-mission {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.vision, .mission {
+    width: 45%;
+}
+
+.vision h3, .mission h3 {
+    font-size: 1.5rem;
+    color: #4a2e3a;
+}
+
+.vision p, .mission ul {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.mission ul {
+    padding-left: 20px;
+}
+
+/* Values */
+.values ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.values li {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0.5rem 0;
+}
+
+.values h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .vision-mission {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .vision, .mission {
+        width: 100%;
+    }
+}

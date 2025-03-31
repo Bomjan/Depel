@@ -6,6 +6,7 @@ from django.db import models
 class BoardOfDirector(models.Model):
     name = models.CharField(max_length=200)
     position = models.CharField(max_length=200)
+    bio = models.CharField(max_length=150)
     image = models.ImageField(upload_to='directors/')  # Path where images will be stored
 
     def __str__(self):
@@ -14,6 +15,7 @@ class BoardOfDirector(models.Model):
 class ManagementTeam(models.Model):
     name = models.CharField(max_length=200)
     position = models.CharField(max_length=200)
+    bio = models.CharField(max_length=150)
     image = models.ImageField(upload_to='management_team/')  # Path where images will be stored
 
     def __str__(self):
@@ -22,13 +24,14 @@ class ManagementTeam(models.Model):
 class Employee(models.Model):
     name = models.CharField(max_length=200)
     position = models.CharField(max_length=200)
+    bio = models.CharField(max_length=150)
     image = models.ImageField(upload_to='employees/')  # Path where images will be stored
 
     def __str__(self):
         return self.name
 
 
-class ProductService(models.Model):
+class MiniTiller(models.Model):
     name = models.CharField(max_length=255)
     brand = models.CharField(max_length=100)
     type_is = models.CharField(max_length=100) #because 'type' is a keyword and can't be used as variable. 
@@ -52,7 +55,7 @@ class ProductService(models.Model):
         return self.name
 
 class ProductParts(models.Model):
-    product = models.ForeignKey(ProductService, on_delete=models.CASCADE, related_name='parts')
+    product = models.ForeignKey(MiniTiller, on_delete=models.CASCADE, related_name='parts')
     image = models.ImageField(upload_to='products/parts/')
 
     def __str__(self):
