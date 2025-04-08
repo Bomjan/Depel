@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<nav>
+    <div class="dropdown">
+        <a href="#" class="dropdown-trigger">Products & Services ▾</a>
+        <div class="dropdown-menu">
+            <div class="dropdown-grid">
+                {% for category in categories %}
+                    <div class="dropdown-column">
+                        <h3 class="category-title">{{ category.name }}</h3>
+                        <ul>
+                            {% for service in category.services.all %}
+                                <li>
+                                    <img src="{{ service.image.url }}" alt="{{ service.name }}">
+                                    <a href="{{ service.get_absolute_url }}">{{ service.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}

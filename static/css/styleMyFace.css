@@ -56,9 +56,8 @@ nav ul li a:hover {
     display: none;
     position: absolute;
     top: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
+    left: 0;
+    background: #ececec;
     box-shadow: 0 12px 40px rgba(0,0,0,0.12);
     border-radius: 14px;
     padding: 32px;
@@ -76,7 +75,7 @@ nav ul li a:hover {
 .dropdown:hover .dropdown-menu {
     display: block;
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-60%) translateY(0);
 }
 
 /* Grid Layout */
@@ -86,46 +85,7 @@ nav ul li a:hover {
     gap: 40px;
 }
 
-/* Service List Columns */
-.service-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.service-list li {
-    padding: 2px 0;
-}
-
-/* Category Styling */
-.category-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-/* Link Styling */
-.service-list a {
-    color: #444;
-    text-decoration: none;
-    font-size: 15px;
-    transition: all 0.25s ease;
-    padding: 8px 16px;
-    border-radius: 8px;
-    display: block;
-}
-
-.service-list a:hover {
-    color: #0052cc;
-    background: #f8faff;
-    transform: translateX(6px);
-}
+/* here */
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
@@ -187,6 +147,57 @@ nav ul li a:hover {
     background: rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 }
+
+.dropdown-column ul {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 200px;
+    overflow-wrap: normal;
+}
+/* no here */
+
+/* Service List Columns */
+.dropdown-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.dropdown-column li {
+    padding: 0;
+}
+
+/* Category Styling */
+.category-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #003b02;
+    margin-bottom: 2px;
+    padding: 6px;
+    border-bottom: 2px solid #babab9;
+}
+
+/* Link Styling */
+.dropdown-column a {
+    color: #444;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.25s ease;
+    padding: 8px 8px;
+    border-radius: 8px;
+    display: block;
+}
+
+.dropdown-column a:hover {
+    color: #0052cc;
+    background: #f8faff;
+    transform: translateX(6px);
+}
+
 
 /* Carousel Styles */
 .carousel-container {

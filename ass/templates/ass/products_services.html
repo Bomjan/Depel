@@ -1,81 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products & Services</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styleMyAss.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products &amp; Services Dashboard</title>
+  {% load static %}
+  {% load content_type_tags %}
+
+  <link rel="stylesheet" href="{% static 'css/styleMyAss.css' %}">
+  <style>
+    /* Inline styles for a vertical sidebar layout */
+    .container {
+      display: flex;
+      min-height: 80vh;
+    }
+    .sidebar {
+      width: 250px;
+      padding: 1rem;
+      background-color: #f2f2f2;
+      border-right: 1px solid #ddd;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .sidebar li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+    .sidebar a:hover {
+      background-color: #ddd;
+    }
+    .main-content {
+      flex: 1;
+      padding: 1rem;
+    }
+    .delete-btn, .add-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #ff6666;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .add-btn {
+      background-color: #66cc66;
+
+    }
+
+    .pusher {
+        height: 8cm;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Products and Services</h1>
+    <nav>
+      <ul>
+        <li><a href="/ass/dashboard/">Dashboard</a></li>
+        <!-- Additional navigation items if necessary -->
+      </ul>
+    </nav>
+  </header>
 
-    <header>
-        <h1>Manage Products & Services</h1>
-        <nav>
-            <ul>
-                <li><a href="/ass/dashboard/">Back to Dashboard</a></li>
-            </ul>
-        </nav>
-    </header>
+  <div class="container">
+    <!-- Vertical Sidebar for Category/Form Selection -->
+    <aside class="sidebar">
+      <h2>Select a Category</h2>
+      <ul>
+        {% for category in categories %}
+            <a href="?category={{ category.id }}">
+                <li>{{ category.name }}</li>
+            </a> 
+        {% empty %}
+          <li>No categories available.</li>
+        {% endfor %}
+      </ul>
+    </aside>
+    <div class="pusher">
 
-    <main>
-        <h2>Products & Services</h2>
-        <p>Manage all company products and services here.</p>
-
+    </div>
+    <!-- Main Content Area -->
+    <section class="main-content">
+      {% if selected_category %}
+        <!-- Display Products/Services -->
         <section>
-            <h3>List of Products & Services</h3>
-            <ul class="product-list">
-                {% for item in products_services %}
-                    <li class="product-item">
-                        <div class="main-image">
-                            <img src="{{ item.image.url }}" alt="{{ item.name }}" width="200">
-                        </div>
-                        <div class="product-details">
-                            <h4>{{ item.name }}</h4>
-                            <div class="specifications">
-                                <p><strong>Brand:</strong> {{ item.brand }}</p>
-                                <p><strong>Power:</strong> {{ item.power }}</p>
-                                <p><strong>Fuel Type:</strong> {{ item.fuel }}</p>
-                            </div>
-                            
-                            <!-- Additional Images -->
-                            <div class="part-images">
-                                {% for part in item.parts.all %}
-                                    <img src="{{ part.image.url }}" alt="Part image" width="100">
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                        <!-- Delete Button -->
-                        <form method="post" class="delete-form">
-                            {% csrf_token %}
-                            <input type="hidden" name="delete_product_service" value="{{ item.id }}">
-                            <button type="submit" class="delete-btn">Delete</button>
-                        </form>
+          <h2>{{ selected_category.name }}</h2>
+          {% if products_services %}
+            <ul>
+              {% for cat, products in products_services.items %}
+                {% if cat.id == selected_category.id %}
+                  {% for product in products %}
+                    <li>
+                      <strong>{{ product.name }}</strong>
+                      {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width:150px;">
+                      {% endif %}
+                      <!-- Delete Product Form -->
+                      <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="content_type" value="{{ product|content_type_id }}">
+                        <input type="hidden" name="object_id" value="{{ product.id }}">
+                        <button type="submit" name="delete_product_service" class="delete-btn">Remove</button>
+                      </form>
                     </li>
-                {% endfor %}
+                  {% empty %}
+                    <li>No products available in this category.</li>
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
             </ul>
-
-            <h4>Add a New Product or Service</h4>
-            <form method="post" enctype="multipart/form-data" class="product-form">
-                {% csrf_token %}
-                
-                <!-- Main Product Fields -->
-                <div class="form-section">
-                    {{ product_service_form.as_p }}
-                </div>
-
-                <!-- Additional Images Field -->
-                <div class="form-section">
-                    <label>Additional Part Images:</label>
-                    <input type="file" name="images" multiple accept="image/*">
-                </div>
-
-                <button type="submit" name="add_product_service" class="add-btn">Add Product</button>
-            </form>
+          {% else %}
+            <p>No products available in this category.</p>
+          {% endif %}
         </section>
-    </main>
 
-    <script src="{% static 'js/scripts.js' %}"></script>
+        <!-- Add New Product/Service Form -->
+        <section>
+          <h3>Add New {{ selected_category.name }}</h3>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="category" value="{{ selected_category.id }}">
+            {{ product_service_form.as_p }}
+            <button type="submit" name="add_product_service" class="add-btn">Add {{selected_category.name}}</button>
+          </form>
+        </section>
+      {% else %}
+        <section>
+          <p>Please select a category to view products and add new items.</p>
+        </section>
+      {% endif %}
+    </section>
+  </div>
 </body>
 </html>

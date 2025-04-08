@@ -1,8 +1,29 @@
 from django import forms
-from .models import BoardOfDirector, ManagementTeam, Employee
-from .models import MiniTiller, ProductParts
-from .models import Website
-from .models import Carousel
+
+from .models import (
+    # people
+    BoardOfDirector,
+    ManagementTeam,
+    Employee,
+
+    # products
+    Category, 
+    ProductParts,
+    MiniTiller, # 1
+    HarvestingMachine, # 2
+    PlantingSowingMachine, # 3
+    ThreshingMachine, # 4
+    WeedingMachine, # 5
+    OtherMachine, # 6
+    MillingMachine, # 7
+    IrrigationMachine,
+
+    # websites
+    Website,
+
+    # carousels
+    Carousel
+)
 
 class BoardOfDirectorForm(forms.ModelForm):
     class Meta:
@@ -21,13 +42,76 @@ class EmployeeForm(forms.ModelForm):
 
 
 # Main product form
-class MiniTillerForm(forms.ModelForm):
+class CategoryForm(forms.ModelForm):
     class Meta:
+        model = Category
+        fields = ['name', 'slug']
+        widgets = {
+            'slug': forms.TextInput(attrs={'placeholder': 'Auto-generated if empty'})
+        }
+        help_texts = {
+            'slug': 'Leave empty to auto-generate from name'
+        }
+
+class ProductBaseForm(forms.ModelForm):
+    class Meta:
+        widgets = {
+            'slug': forms.TextInput(attrs={'placeholder': 'Auto-generated, please keep it empty'}),
+            'description': forms.Textarea(attrs={'rows': 2}),
+        }
+        help_texts = {
+            'slug': 'Leave empty to auto-generate from product name'
+        }
+
+# ---- Product Forms ---- #
+class MiniTillerForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
         model = MiniTiller
         fields = '__all__'
+        exclude = ['slug', 'category']
 
-#this is custom widget for multiple image parts reception. 
-from django import forms
+class MillingMachineForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
+        model = MillingMachine
+        fields = '__all__'
+        exclude = ['slug', 'category']
+
+class HarvestingMachineForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
+        model = HarvestingMachine
+        fields = '__all__'
+        exclude = ['slug', 'category']
+
+class PlantingSowingMachineForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
+        model = PlantingSowingMachine
+        fields = '__all__'
+        exclude = ['slug', 'category']
+
+class ThreshingMachineForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
+        model = ThreshingMachine
+        fields = '__all__'
+        exclude = ['slug', 'category']
+
+class WeedingMachineForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
+        model = WeedingMachine
+        fields = '__all__'
+        exclude = ['slug', 'category']
+
+class IrrigationMachineForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
+        model = IrrigationMachine
+        fields = '__all__'
+        exclude = ['slug', 'category']
+
+class OtherMachineForm(ProductBaseForm):
+    class Meta(ProductBaseForm.Meta):
+        model = OtherMachine
+        fields = '__all__'
+        exclude = ['slug', 'category']
+
 
 class MultipleFileInput(forms.widgets.Input):
     input_type = 'file'

@@ -39,6 +39,9 @@
                         <!-- Add Delete Button -->
                         <form method="post" style="display:inline;">
                             {% csrf_token %}
+                            <input type="hidden" name="edit_board_member" value="{{ member.id }}">
+                            <button type="submit" class="edit-btn">Edit</button>
+
                             <input type="hidden" name="delete_board_member" value="{{ member.id }}">
                             <button type="submit" class="delete-btn">Delete</button>
                         </form>

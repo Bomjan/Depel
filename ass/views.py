@@ -1,39 +1,84 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.contenttypes.models import ContentType
+from .models import Product
+from .models import (
+    # people
+    BoardOfDirector,
+    ManagementTeam,
+    Employee,
 
-from .models import BoardOfDirector, ManagementTeam, Employee
-from .forms import BoardOfDirectorForm, ManagementTeamForm, EmployeeForm
+    # products
+    Category, 
+    ProductParts,
+    MiniTiller, # 1
+    HarvestingMachine, # 2
+    PlantingSowingMachine, # 3
+    ThreshingMachine, # 4
+    WeedingMachine, # 5
+    OtherMachine, # 6
+    MillingMachine, # 7
+    IrrigationMachine, # 8
 
-from .models import MiniTiller, ProductParts
-from .forms import MiniTillerForm, ProductPartsForm
+    # websites
+    Website,
 
-from .models import Website  
-from .forms import WebsiteForm 
+    # carousels
+    Carousel
+)
 
-from .models import Carousel
-from .forms import CarouselForm
+from .forms import (
+    MiniTillerForm, 
+    MillingMachineForm, 
+    HarvestingMachineForm,
+    PlantingSowingMachineForm, 
+    ThreshingMachineForm,
+    WeedingMachineForm, 
+    IrrigationMachineForm,
+    OtherMachineForm
+)
 
+from .forms import (BoardOfDirectorForm, ManagementTeamForm, EmployeeForm, WebsiteForm, CarouselForm)
 from django.contrib.auth.decorators import login_required
+
 @login_required
 def dashboard(request):
-    # Handling form submissions for adding new members
+    # Handling form submissions for adding, editing, and deleting members
     if request.method == 'POST':
-        # Add new Board Member
-        if 'add_board_member' in request.POST:
-            form = BoardOfDirectorForm(request.POST, request.FILES)
+        # Add or Edit Board Member
+        if 'add_board_member' in request.POST or 'edit_board_member' in request.POST:
+            if 'edit_board_member' in request.POST:
+                member_id = request.POST.get('edit_board_member')
+                member = BoardOfDirector.objects.get(id=member_id)
+                form = BoardOfDirectorForm(request.POST, request.FILES, instance=member)
+            else:
+                form = BoardOfDirectorForm(request.POST, request.FILES)
+            
             if form.is_valid():
                 form.save()
                 return redirect('ass:dashboard')
         
-        # Add new Management Team member
-        elif 'add_management_member' in request.POST:
-            form = ManagementTeamForm(request.POST, request.FILES)
+        # Add or Edit Management Team Member
+        elif 'add_management_member' in request.POST or 'edit_management_member' in request.POST:
+            if 'edit_management_member' in request.POST:
+                member_id = request.POST.get('edit_management_member')
+                member = ManagementTeam.objects.get(id=member_id)
+                form = ManagementTeamForm(request.POST, request.FILES, instance=member)
+            else:
+                form = ManagementTeamForm(request.POST, request.FILES)
+            
             if form.is_valid():
                 form.save()
                 return redirect('ass:dashboard')
 
-        # Add new Employee
-        elif 'add_employee' in request.POST:
-            form = EmployeeForm(request.POST, request.FILES)
+        # Add or Edit Employee
+        elif 'add_employee' in request.POST or 'edit_employee' in request.POST:
+            if 'edit_employee' in request.POST:
+                member_id = request.POST.get('edit_employee')
+                member = Employee.objects.get(id=member_id)
+                form = EmployeeForm(request.POST, request.FILES, instance=member)
+            else:
+                form = EmployeeForm(request.POST, request.FILES)
+            
             if form.is_valid():
                 form.save()
                 return redirect('ass:dashboard')
@@ -79,63 +124,82 @@ def dashboard(request):
         }
 
         return render(request, 'ass/dashboard.html', context)
-    
+
+
 
 @login_required
 def products_services(request):
-    products_services = MiniTiller.objects.all().prefetch_related('parts')
-    product_service_form = MiniTillerForm()
-    parts_form = ProductPartsForm()  # Use the updated non-ModelForm
+    # Category to form/model mapping
+    PRODUCT_MAP = {
+        'MiniTillers': (MiniTiller, MiniTillerForm),
+        'Milling Machines': (MillingMachine, MillingMachineForm),
+        'Harvesting Machines': (HarvestingMachine, HarvestingMachineForm),
+        'Planting and Sowing Machines': (PlantingSowingMachine, PlantingSowingMachineForm),
+        'Threshing Machines': (ThreshingMachine, ThreshingMachineForm),
+        'Weeding Machines': (WeedingMachine, WeedingMachineForm),
+        'Irrigation Machines': (IrrigationMachine, IrrigationMachineForm),
+        'Other Machines': (OtherMachine, OtherMachineForm),
+    }
 
-    if request.method == "POST":
-        if "add_product_service" in request.POST:
-            product_form = ProductServiceForm(request.POST, request.FILES)
-            parts_form = ProductPartsForm(request.POST, request.FILES)
+    categories = Category.objects.all()
+    selected_category = None
+    products_services = {}
+    form = None
 
-            if product_form.is_valid():
-                product = product_form.save()
+    # Handle category selection
+    if 'category' in request.GET:
+        selected_category = get_object_or_404(Category, id=request.GET['category'])
+        model_class, form_class = PRODUCT_MAP.get(selected_category.name, (None, None))
+        
+        if model_class and form_class:
+            products = model_class.objects.filter(category=selected_category).prefetch_related('parts')
+            products_services[selected_category] = products
+            form = form_class()
 
-                # Handle multiple parts images
-                if parts_form.is_valid():
-                    for img in request.FILES.getlist('images'):
-                        ProductParts.objects.create(product=product, image=img)
-
-                return redirect('ass:products_services')
-
-        elif "delete_product_service" in request.POST:
-            product_id = request.POST.get("delete_product_service")
+    # Handle form submissions
+    if request.method == 'POST':
+        # Add new product
+        if 'add_product_service' in request.POST:
+            category_id = request.POST.get('category')
+            selected_category = get_object_or_404(Category, id=category_id)
+            model_class, form_class = PRODUCT_MAP.get(selected_category.name, (None, None))
             
-            try:
-                product = MiniTiller.objects.get(id=product_id)
-                
-                # Delete all related ProductParts first
-                product.parts.all().delete()
-                
-                # Delete the ProductService itself
-                product.delete()
-                
-            except MiniTiller.DoesNotExist:
-                pass  # If product not found, do nothing
+            if model_class and form_class:
+                form = form_class(request.POST, request.FILES)
+                if form.is_valid():
+                    product = form.save(commit=False)
+                    product.category = selected_category
+                    product.save()
+                    
+                    # Handle multiple images using generic relations
+                    for image in request.FILES.getlist('images'):
+                        ProductParts.objects.create(
+                            content_object=product,
+                            image=image
+                        )
+                    return redirect(f'/ass/products-services/')
 
-            return redirect('ass:products_services')
+        # Delete product
+        elif 'delete_product_service' in request.POST:
+            content_type_id = request.POST.get('content_type')
+            object_id = request.POST.get('object_id')
+            content_type = ContentType.objects.get_for_id(content_type_id)
+            product = content_type.get_object_for_this_type(pk=object_id)
+            product.delete()
+            return redirect(request.META.get('HTTP_REFERER', '/ass/products-services/'))
 
-    return render(request, 'ass/products_services.html', {
-        "products_services": products_services,
-        "product_service_form": product_service_form,
-        "parts_form": parts_form,
-    })
-
-    return render(request, 'ass/products_services.html', {
-        "products_services": products_services,
-        "product_service_form": product_service_form,
-        "parts_form": parts_form,
-    })
+    context = {
+        'categories': categories,
+        'selected_category': selected_category,
+        'products_services': products_services,
+        'product_service_form': form,
+    }
+    return render(request, 'ass/products_services.html', context)
 
 @login_required
 def website_list(request):
-    websites = Website.objects.all()  # Fetch all websites
+    websites = Website.objects.all()
 
-    # Handle adding a new website
     if request.method == 'POST':
         if 'add_website' in request.POST:
             form = WebsiteForm(request.POST)
@@ -143,7 +207,15 @@ def website_list(request):
                 form.save()
                 return redirect('ass:website_list')
 
-        elif 'delete_website' in request.POST:  # Handle delete request
+        elif 'edit_website' in request.POST:
+            website_id = request.POST.get('edit_website')
+            website = Website.objects.get(id=website_id)
+            form = WebsiteForm(request.POST, instance=website)
+            if form.is_valid():
+                form.save()
+                return redirect('ass:website_list')
+
+        elif 'delete_website' in request.POST:
             website_id = request.POST.get('delete_website')
             Website.objects.filter(id=website_id).delete()
             return redirect('ass:website_list')
@@ -153,15 +225,17 @@ def website_list(request):
 
     return render(request, 'ass/website_list.html', {'websites': websites, 'form': form})
 
+
 @login_required
 def manage_carousel(request):
     if request.method == "POST":
-        if "delete_image" in request.POST:  # Delete image
+        if "delete_image" in request.POST:
             image_id = request.POST.get("delete_image")
-            Carousel.objects.filter(id=image_id).delete()
+            image = get_object_or_404(Carousel, id=image_id)
+            image.delete()
             return redirect("ass:manage_carousel")
 
-        form = CarouselForm(request.POST, request.FILES)  # Upload image
+        form = CarouselForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("ass:manage_carousel")
@@ -170,21 +244,3 @@ def manage_carousel(request):
     form = CarouselForm()
     return render(request, "ass/manage_carousel.html", {"images": images, "form": form})
 
-def create_product(request):
-    if request.method == 'POST':
-        product_form = ProductServiceForm(request.POST, request.FILES)
-        parts_form = ProductPartsForm(request.POST, request.FILES)
-        
-        if product_form.is_valid():
-            product = product_form.save()
-            if parts_form.is_valid():
-                parts_form.save(product=product)
-            return redirect('success_url')
-    else:
-        product_form = ProductServiceForm()
-        parts_form = ProductPartsForm()
-
-    return render(request, 'create_product.html', {
-        'product_form': product_form,
-        'parts_form': parts_form
-    })

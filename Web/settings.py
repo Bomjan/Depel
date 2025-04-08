@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-tyh4c5b-)54vn*%d*t=ux^6_@03o2)y(k2!bh!6=$ng=tf+)y0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['119.2.104.122', 'localhost', ]
+ALLOWED_HOSTS = ['119.2.104.122', 'localhost', '127.0.0.1', '192.168.1.3']
 
 
 # Application definition
@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "face.context_processors.navbar_categories",
             ],
         },
     },
@@ -134,6 +135,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGIN_REDIRECT_URL = "/ass/dashboard"
-
-import django_heroku
-django_heroku.settings(locals())

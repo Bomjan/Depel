@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Depel Agro Tech Private Limited</title>
     {% load static %}
+    {% load extras%}
     <link rel="stylesheet" href="{% static 'css/styleMyFace.css' %}">
     <link rel="stylesheet" href="{% static 'css/styleMyFaceInfo.css' %}">
     
@@ -30,15 +31,15 @@
                 clickCount++;
         
                 if (clickCount === 1) {
-                    // Start a 5-second timer on the first click
+                    
                     timer = setTimeout(() => {
                         clickCount = 0;
                     }, 5000);
                 }
         
                 if (clickCount === 5) {
-                    clearTimeout(timer); // Reset timer
-                    window.location.href = "/login"; // Redirect to login page
+                    clearTimeout(timer); 
+                    window.location.href = "/login";
                 }
             });
         </script>
@@ -49,106 +50,151 @@
                 <li><a href="/info">About Us</a></li>
                 
                 <li class="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <a href="#products-services" class="dropdown-trigger" aria-label="Products & Services dropdown menu">
-                        Products & Services <span aria-hidden="true">▾</span>
+                    <a href="#" class="dropdown-trigger" aria-label="Products & Services dropdown menu">
+                        Products & Services 
                     </a>
                     <div class="dropdown-menu" role="menu">
+                        <div class="msg">
+                            <p><strong>[HELP] :</strong> Double tap and drag it down.</p>
+                        </div>
+                        <!--
                         <div class="dropdown-grid">
-                            <!-- Category 1 -->
-                            <section class="dropdown-column" aria-labelledby="category1-heading">
-                                <h3 id="category1-heading" class="category-title">Category 1</h3>
+                            
+                            
+                            <section class="dropdown-column" aria-labelledby="minitillers-heading">
+                                <h3 id="minitillers-heading" class="category-title">Mini Tillers</h3>
                                 <ul role="none">
-                                    <li role="none">
-                                        <a href="/products/service1" role="menuitem" tabindex="-1">Service 1</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service2" role="menuitem" tabindex="-1">Service 2</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service3" role="menuitem" tabindex="-1">Service 3</a>
-                                    </li>
+                                    {% for product in minitillers %}
+                                        <li role="none">
+                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
                                 </ul>
                             </section>
                 
-                            <!-- Category 2 -->
-                            <section class="dropdown-column" aria-labelledby="category2-heading">
-                                <h3 id="category2-heading" class="category-title">Category 2</h3>
+                            
+                            <section class="dropdown-column" aria-labelledby="millingmachines-heading">
+                                <h3 id="millingmachines-heading" class="category-title">Milling Machines</h3>
                                 <ul role="none">
-                                    <li role="none">
-                                        <a href="/products/service4" role="menuitem" tabindex="-1">Service 4</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service5" role="menuitem" tabindex="-1">Service 5</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service6" role="menuitem" tabindex="-1">Service 6</a>
-                                    </li>
+                                    {% for product in milling_machines %}
+                                        <li role="none">
+                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
                                 </ul>
                             </section>
                 
-                            <!-- Category 3 -->
-                            <section class="dropdown-column" aria-labelledby="category3-heading">
-                                <h3 id="category3-heading" class="category-title">Category 3</h3>
+                            
+                            <section class="dropdown-column" aria-labelledby="harvestingmachines-heading">
+                                <h3 id="harvestingmachines-heading" class="category-title">Harvesting Machines</h3>
                                 <ul role="none">
-                                    <li role="none">
-                                        <a href="/products/service7" role="menuitem" tabindex="-1">Service 7</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service8" role="menuitem" tabindex="-1">Service 8</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service9" role="menuitem" tabindex="-1">Service 9</a>
-                                    </li>
+                                    {% for product in harvesting_machines %}
+                                        <li role="none">
+                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
                                 </ul>
                             </section>
                 
-                            <!-- Category 4 -->
-                            <section class="dropdown-column" aria-labelledby="category4-heading">
-                                <h3 id="category4-heading" class="category-title">Category 4</h3>
+                            
+                            <section class="dropdown-column" aria-labelledby="plantingmachines-heading">
+                                <h3 id="plantingmachines-heading" class="category-title">Planting and Sowing Machines</h3>
                                 <ul role="none">
-                                    <li role="none">
-                                        <a href="/products/service10" role="menuitem" tabindex="-1">Service 10</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service11" role="menuitem" tabindex="-1">Service 11</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service12" role="menuitem" tabindex="-1">Service 12</a>
-                                    </li>
+                                    {% for product in planting_machines %}
+                                        <li role="none">
+                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
                                 </ul>
                             </section>
                 
-                            <!-- Category 5 -->
-                            <section class="dropdown-column" aria-labelledby="category5-heading">
-                                <h3 id="category5-heading" class="category-title">Category 5</h3>
+                            
+                            <section class="dropdown-column" aria-labelledby="threshingmachines-heading">
+                                <h3 id="threshingmachines-heading" class="category-title">Threshing Machines</h3>
                                 <ul role="none">
-                                    <li role="none">
-                                        <a href="/products/service13" role="menuitem" tabindex="-1">Service 13</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service14" role="menuitem" tabindex="-1">Service 14</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service15" role="menuitem" tabindex="-1">Service 15</a>
-                                    </li>
+                                    {% for product in threshing_machines %}
+                                        <li role="none">
+                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
                                 </ul>
                             </section>
                 
-                            <!-- Category 6 -->
-                            <section class="dropdown-column" aria-labelledby="category6-heading">
-                                <h3 id="category6-heading" class="category-title">Category 6</h3>
+                            
+                            <section class="dropdown-column" aria-labelledby="weedingmachines-heading">
+                                <h3 id="weedingmachines-heading" class="category-title">Weeding Machines</h3>
                                 <ul role="none">
-                                    <li role="none">
-                                        <a href="/products/service16" role="menuitem" tabindex="-1">Service 16</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service17" role="menuitem" tabindex="-1">Service 17</a>
-                                    </li>
-                                    <li role="none">
-                                        <a href="/products/service18" role="menuitem" tabindex="-1">Service 18</a>
-                                    </li>
+                                    {% for product in weeding_machines %}
+                                        <li role="none">
+                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
                                 </ul>
                             </section>
+
+                            
+                            <section class="dropdown-column" aria-labelledby="weedingmachines-heading">
+                                <h3 id="weedingmachines-heading" class="category-title">Weeding Machines</h3>
+                                <ul role="none">
+                                    {% for product in irrigation_machine %}
+                                        <li role="none">
+                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
+                                </ul>
+                            </section>
+                
+                            
+                            <section class="dropdown-column" aria-labelledby="othermachines-heading">
+                                <h3 id="othermachines-heading" class="category-title">Other Machines</h3>
+                                <ul role="none">
+                                    {% for product in other_machines %}
+                                        <li role="none">
+                                            <a href="/product_detail/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>No products available.</li>
+                                    {% endfor %}
+                                </ul>
+                            </section> -->
+                            
+                            <div class="dropdown-grid">
+                                {% for key, products in nav.items %}
+                                    <section class="dropdown-column" aria-labelledby="{{ key }}-heading">
+                                        <h3 id="{{ key }}-heading" class="category-title">
+                                            <!-- {{ key|cut:"_"|title }} -->
+                                              {{ key | beautify_key  }}
+                                        </h3>
+                                        <ul role="none">
+                                            {% for product in products %}
+                                                <li role="none">
+                                                    <a href="/product_detail/{{ product.category.slug }}/{{ product.slug }}" role="menuitem" tabindex="-1" style="display: flex; flex-wrap: nowrap; width: 100%;">
+                                                        <img src="{{product.image.url}}" alt="{{ product.name }}" style="max-width: 30px; max-height: 30px; border-radius: 50%; margin: 8px;" ><p style="display: inline-block; top: 0; bottom: 0;" >{{ product.name }}</p>
+                                                    </a>
+                                                </li>
+                                            {% empty %}
+                                                <li style="color: black; text-wrap: nowrap;">No products available.</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </section>
+                                {% endfor %}
+                            </div>
+                            
+                            
                         </div>
                     </div>
                 </li>
