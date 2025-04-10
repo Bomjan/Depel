@@ -17,6 +17,7 @@
     .sidebar {
       width: 250px;
       padding: 1rem;
+      position: sticky;
       background-color: #f2f2f2;
       border-right: 1px solid #ddd;
     }
@@ -48,18 +49,20 @@
     .delete-btn, .add-btn {
       padding: 0.5rem 1rem;
       border: none;
-      background-color: #ff6666;
-      color: #fff;
+      background-color: #ab4545b1;
+      color: #1c1a1a;
       cursor: pointer;
+      border: 2px solid rgba(0, 0, 0, 0.1);
       border-radius: 4px;
     }
     .add-btn {
-      background-color: #66cc66;
+      background-color: #53b25388;
 
     }
 
     .pusher {
-        height: 8cm;
+        height: 90px;
+        width: 10px;
     }
   </style>
 </head>
@@ -73,6 +76,9 @@
       </ul>
     </nav>
   </header>
+  <div class="pusher">
+
+  </div>
 
   <div class="container">
     <!-- Vertical Sidebar for Category/Form Selection -->
@@ -88,9 +94,7 @@
         {% endfor %}
       </ul>
     </aside>
-    <div class="pusher">
-
-    </div>
+  
     <!-- Main Content Area -->
     <section class="main-content">
       {% if selected_category %}
@@ -133,7 +137,7 @@
             {% csrf_token %}
             <input type="hidden" name="category" value="{{ selected_category.id }}">
             {{ product_service_form.as_p }}
-            <button type="submit" name="add_product_service" class="add-btn">Add {{selected_category.name}}</button>
+            <button type="submit" name="add_product_service" class="add-btn">Save & Add {{selected_category.name}}</button>
           </form>
         </section>
       {% else %}

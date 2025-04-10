@@ -40,7 +40,7 @@
                         <form method="post" style="display:inline;">
                             {% csrf_token %}
                             <input type="hidden" name="edit_board_member" value="{{ member.id }}">
-                            <button type="submit" class="edit-btn">Edit</button>
+                            <!-- <button type="submit" class="edit-btn">Edit</button> -->
 
                             <input type="hidden" name="delete_board_member" value="{{ member.id }}">
                             <button type="submit" class="delete-btn">Delete</button>
@@ -53,7 +53,7 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ board_member_form.as_p }}
-                <button type="submit" name="add_board_member" class="add-btn">Add Board Member</button>
+                <button type="submit" name="add_board_member" class="add-btn">Save & Add Board Member</button>
             </form>
         </section>
 
@@ -80,7 +80,7 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ management_member_form.as_p }}
-                <button type="submit" name="add_management_member" class="add-btn">Add Management Team Member</button>
+                <button type="submit" name="add_management_member" class="add-btn">Save & Add Management Team Member</button>
             </form>
         </section>
 
@@ -109,7 +109,7 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ employee_form.as_p }}
-                <button type="submit" name="add_employee" class="add-btn">Add Employee</button>
+                <button type="submit" name="add_employee" class="add-btn">Save & Add Employee</button>
             </form>
         </section>
     </main>

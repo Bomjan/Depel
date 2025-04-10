@@ -127,8 +127,25 @@ def dashboard(request):
 
 
 
+def create_default_categories():
+    category_names = [
+        "MiniTillers",
+        "Milling Machines",
+        "Harvesting Machines",
+        "Planting and Sowing Machines",
+        "Threshing Machines",
+        "Weeding Machines",
+        "Irrigation Machines",
+        "Other Machines",
+    ]
+    for name in category_names:
+        Category.objects.get_or_create(name=name)
+
 @login_required
 def products_services(request):
+    # Create default categories if they don't exist
+    create_default_categories()
+
     # Category to form/model mapping
     PRODUCT_MAP = {
         'MiniTillers': (MiniTiller, MiniTillerForm),
@@ -158,7 +175,7 @@ def products_services(request):
 
     # Handle form submissions
     if request.method == 'POST':
-        # Add new product
+        # Add new product/service
         if 'add_product_service' in request.POST:
             category_id = request.POST.get('category')
             selected_category = get_object_or_404(Category, id=category_id)
@@ -179,7 +196,7 @@ def products_services(request):
                         )
                     return redirect(f'/ass/products-services/')
 
-        # Delete product
+        # Delete product/service
         elif 'delete_product_service' in request.POST:
             content_type_id = request.POST.get('content_type')
             object_id = request.POST.get('object_id')

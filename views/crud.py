@@ -2,7 +2,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, F
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.contrib.contenttypes.models import ContentType
-from .models import (
+from ass.models import (
     BoardOfDirector, ManagementTeam, Employee,
     Category, MiniTiller, MillingMachine, HarvestingMachine,
     PlantingSowingMachine, ThreshingMachine, WeedingMachine,

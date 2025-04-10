@@ -57,7 +57,7 @@ nav ul li a:hover {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    background: #ececec;
+    background: #e6e3e398;
     box-shadow: 0 12px 40px rgba(0,0,0,0.12);
     border-radius: 14px;
     padding: 32px;
@@ -120,12 +120,13 @@ nav ul li a:hover {
     left: 0;
     right: 0;
     z-index: 2000;
-    height: 15px; /* Match padding-bottom value */
+    height: 15px;
+    border: rgba(0, 0, 0, 0.05);
 }
 
 .dropdown-menu {
-    top: calc(100% + 15px); /* Match hover buffer height */
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    top: 100%; /* Match hover buffer height */
+    transition: opacity 0.3s ease, transform 1.3s ease, visibility 0.3s;
     pointer-events: all;
 }
 
@@ -139,9 +140,9 @@ nav ul li a:hover {
     width: 8px;
 }
 
-.dropdown-menu::-webkit-scrollbar-track {
+/* .dropdown-menu::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
-}
+} */
 
 .dropdown-menu::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.15);

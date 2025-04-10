@@ -22,7 +22,10 @@ from .models import (
     Website,
 
     # carousels
-    Carousel
+    Carousel,
+
+    # video
+    PaddyThresherVideo
 )
 
 class BoardOfDirectorForm(forms.ModelForm):
@@ -141,3 +144,14 @@ class CarouselForm(forms.ModelForm):
     class Meta:
         model = Carousel 
         fields = ['image']
+
+class PaddyThresherVideoForm(forms.ModelForm):
+    class Meta:
+        model = PaddyThresherVideo
+        fields = ['title', 'description', 'video']
+
+class ContactForm(forms.Form):
+    full_name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    subject = forms.CharField(max_length=200)
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}))

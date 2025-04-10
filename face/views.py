@@ -4,6 +4,10 @@ from ass.models import Product, Carousel, Employee, BoardOfDirector, ManagementT
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 
+from django.core.mail import send_mail
+from ass.forms import ContactForm
+from django.conf import settings
+
 from django.shortcuts import render, get_object_or_404
 from ass.models import Category, Product
 
@@ -13,53 +17,52 @@ from ass.models import (
     HarvestingMachine,
     ThreshingMachine,
     PlantingSowingMachine,
-    
+    IrrigationMachine,
     OtherMachine,
     WeedingMachine,
 )
-# this global variables are made to be ascessible to all views
-minitillers = MiniTiller.objects.all()
-milling_machines = MillingMachine.objects.all()
-harvesting_machines = HarvestingMachine.objects.all()
-planting_machines = PlantingSowingMachine.objects.all()
-threshing_machines = ThreshingMachine.objects.all()
-weeding_machines = WeedingMachine.objects.all()
-other_machines = OtherMachine.objects.all()
 
-nav = {
-        'minitillers': minitillers,
-        'milling_machines': milling_machines,
-        'harvesting_machines': harvesting_machines,
-        'planting_machines': planting_machines,
-        'threshing_machines': threshing_machines,
-        'weeding_machines': weeding_machines,
-        'other_machines': other_machines,
+
+def get_nav_context():
+    return {
+        'minitillers': MiniTiller.objects.all(),
+        'milling_machines': MillingMachine.objects.all(),
+        'harvesting_machines': HarvestingMachine.objects.all(),
+        'planting_machines': PlantingSowingMachine.objects.all(),
+        'threshing_machines': ThreshingMachine.objects.all(),
+        'weeding_machines': WeedingMachine.objects.all(),
+        'irrigation_machines': IrrigationMachine.objects.all(),
+        'other_machines': OtherMachine.objects.all(),
     }
-cats = [MiniTiller,
-    MillingMachine,
-    HarvestingMachine,
-    PlantingSowingMachine,
-    ThreshingMachine,
-    WeedingMachine,
-    # IrrigationMachine
-    OtherMachine
-    ]
-category_slugs = [i.slug for i in Category.objects.all()]
-mapped = {}
-for x in range(0, len(cats)):
-    mapped[category_slugs[x]] = cats[x]
 
-# Create your views here.
+
+def get_slug_model_map():
+    cats = [
+        MiniTiller,
+        MillingMachine,
+        HarvestingMachine,
+        PlantingSowingMachine,
+        ThreshingMachine,
+        WeedingMachine,
+        IrrigationMachine,
+        OtherMachine,
+    ]
+    categories = Category.objects.all()
+    return {
+        category.slug: cats[i] for i, category in enumerate(categories) if i < len(cats)
+    }
+
 def index(request):
+    nav = get_nav_context()
+    slug_cat_mapped = get_slug_model_map()
     carousel_images = Carousel.objects.all()
-    serve = {}
-    # categories = [ i for i in Category.objects.all()]
-    serve['nav'] = nav
-    serve['carousel'] = {'carousel_images': carousel_images}
-    serve['mapped'] = mapped
-    # serve = nav | {'carousel_images': carousel_images} | { 'categories': categories} | mapped 
-    return render( request, 'face/index.html ', serve )
-    #return render(request, 'face/index.html', {'carousel_images':carousel_images})
+
+    context = {
+        'nav': nav,
+        'carousel': {'carousel_images': carousel_images},
+        'mapped': slug_cat_mapped,
+    }
+    return render(request, 'face/index.html', context)
 
 
 def login(request):
@@ -77,29 +80,36 @@ def login(request):
     return render(request, "face/login.html")
 
 def info(request):
+    nav = get_nav_context()
+    slug_cat_mapped = get_slug_model_map()
     employees = Employee.objects.all()
     board_members = BoardOfDirector.objects.all()
     management_team = ManagementTeam.objects.all()
 
     context = { 
+        'nav': nav,
+        'mapped': slug_cat_mapped,
         'employees' : employees, 
         'board_members': board_members, 
         'management_team' : management_team,
     }
-    serve = context | nav
-    return render(request, 'face/info.html',serve)
+    return render(request, 'face/info.html',context)
 
 
 def people(request):
     board_of_directors = BoardOfDirector.objects.all()
     management_team = ManagementTeam.objects.all()
     employees = Employee.objects.all()
+    nav = get_nav_context()
+    slug_cat_mapped = get_slug_model_map()
     context = {
+        'nav': nav,
+        'mapped': slug_cat_mapped,
         'board_of_directors': board_of_directors,
         'management_team': management_team,
         'employees': employees
     }
-
+    nav = get_nav_context()
     serve = context | nav
     return render(request, 'face/people.html', serve)
 
@@ -113,6 +123,7 @@ def product_detail(request, category_slug, product_slug):
         'planting_machines': PlantingSowingMachine,
         'threshing_machines': ThreshingMachine,
         'weeding_machines': WeedingMachine,
+        'irrigation_machine' : IrrigationMachine,
         'other_machines': OtherMachine,
     }
     category = get_object_or_404(Category, slug = category_slug)
@@ -132,7 +143,50 @@ def product_detail(request, category_slug, product_slug):
         "product": product,
         "attributes": filtered_attributes,
     }
-    return render(request, 'face/product_detail.html', nav | context)
+    return render(request, 'face/product_detail.html',  context)
 
-def catalogue(request):
-    pass
+def catalog(request):
+    return render(request, 'face/catalog.html')
+
+from ass.models import PaddyThresherVideo
+
+def rnd(request):
+    nav = get_nav_context()
+    slug_cat_mapped = get_slug_model_map()
+    videos = PaddyThresherVideo.objects.all()
+    context = {
+        'nav': nav,
+        'mapped': slug_cat_mapped,
+        'videos': videos,
+    }
+    return render(request, 'face/rnd.html', context)
+
+
+
+
+def contact_us(request):
+    success = False
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Email sending logic (optional)
+            send_mail(
+                subject=form.cleaned_data['subject'],
+                message=f"From: {form.cleaned_data['full_name']} <{form.cleaned_data['email']}>\n\n{form.cleaned_data['message']}",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.DEFAULT_FROM_EMAIL],  # or any recipient
+            )
+            success = True
+            form = ContactForm()  # Reset the form
+    else:
+        form = ContactForm()
+    
+    nav = get_nav_context()
+    slug_cat_mapped = get_slug_model_map()
+    context = {
+        'nav': nav,
+        'mapped': slug_cat_mapped,
+        'form': form,
+        'success': success,
+    }
+    return render(request, 'face/contact_us.html', context)

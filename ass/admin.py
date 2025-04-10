@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import BoardOfDirector, ManagementTeam, Employee
+from .models import BoardOfDirector, ManagementTeam, Employee, PaddyThresherVideo
 
 class BoardOfDirectorAdmin(admin.ModelAdmin):
     list_display = ('name', 'position', 'image')
@@ -29,3 +29,5 @@ admin.site.register(WeedingMachine)
 admin.site.register(OtherMachine)
 admin.site.register(IrrigationMachine)
 admin.site.register(ProductParts)
+admin.site.register(PaddyThresherVideo)
+

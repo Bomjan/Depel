@@ -172,3 +172,13 @@ class Carousel(models.Model):
 
     def __str__(self):
         return f'Carousel Image {self.id}'
+    
+
+class PaddyThresherVideo(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    video = models.FileField(upload_to='paddy_thresher_videos/')  # Use FileField for local or URLField for YouTube links
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
