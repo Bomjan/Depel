@@ -8,15 +8,26 @@ from .models import (
 
     # products
     Category, 
-    ProductParts,
-    MiniTiller, # 1
-    HarvestingMachine, # 2
+
+
+    MiniTiller,            # 1
+    HarvestingMachine,     # 2
     PlantingSowingMachine, # 3
-    ThreshingMachine, # 4
-    WeedingMachine, # 5
-    OtherMachine, # 6
-    MillingMachine, # 7
-    IrrigationMachine,
+    ThreshingMachine,      # 4
+    WeedingMachine,        # 5
+    OtherMachine,          # 6
+    MillingMachine,        # 7
+    IrrigationMachine,     # 8
+
+    # parts
+    MillingMachinePart,
+    MiniTillerPart,
+    HarvestingMachinePart,
+    PlantingSowingMachinePart,
+    ThreshingMachinePart,
+    WeedingMachinePart,
+    OtherMachinePart,
+    IrrigationMachinePart,
 
     # websites
     Website,
@@ -128,13 +139,61 @@ class MultipleFileInput(forms.widgets.Input):
     def value_from_datadict(self, data, files, name):
         return files.getlist(name)
 
-class ProductPartsForm(forms.Form):
-    images = forms.FileField(
-        widget=MultipleFileInput(),
-        required=False,
-        help_text='Select multiple files'
-    )
+
+# class ProductPartsForm(forms.Form):
+#     images = forms.FileField(
+#         widget=MultipleFileInput(),
+#         required=False,
+#         help_text='Select multiple files'
+#     )
     
+#  here
+class BasePartForm(forms.ModelForm):
+    """Common settings: just an ImageField with multiple upload."""
+    class Meta:
+        fields = ['image']
+        widgets = {
+            'image': MultipleFileInput()
+        }
+
+class MiniTillerPartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = MiniTillerPart
+
+class MillingMachinePartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = MillingMachinePart
+
+class HarvestingMachinePartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = HarvestingMachinePart
+
+class PlantingSowingMachinePartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = PlantingSowingMachinePart
+
+class ThreshingMachinePartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = ThreshingMachinePart
+
+class WeedingMachinePartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = WeedingMachinePart
+
+class IrrigationMachinePartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = IrrigationMachinePart
+
+class OtherMachinePartForm(BasePartForm):
+    class Meta(BasePartForm.Meta):
+        model = OtherMachinePart
+
+
+
+# here
+
+
+
 class WebsiteForm(forms.ModelForm):
     class Meta:
         model = Website

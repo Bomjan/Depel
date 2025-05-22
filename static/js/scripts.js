@@ -30,3 +30,7 @@ showSlide(currentIndex);
 // Event listeners for prev and next buttons
 document.querySelector('.carousel-prev').addEventListener('click', prevSlide);
 document.querySelector('.carousel-next').addEventListener('click', nextSlide);
+
+function email_not_sent(){
+    document.getElementById('email_not_sent').textContent = 'Sorry, your email has not been sent.'
+}

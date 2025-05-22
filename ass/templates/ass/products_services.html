@@ -57,7 +57,6 @@
     }
     .add-btn {
       background-color: #53b25388;
-
     }
 
     .pusher {
@@ -72,13 +71,11 @@
     <nav>
       <ul>
         <li><a href="/ass/dashboard/">Dashboard</a></li>
-        <!-- Additional navigation items if necessary -->
+        <li><a href="/admin/">View Django admin page</a></li>
       </ul>
     </nav>
   </header>
-  <div class="pusher">
-
-  </div>
+  <div class="pusher"></div>
 
   <div class="container">
     <!-- Vertical Sidebar for Category/Form Selection -->
@@ -136,8 +133,15 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="category" value="{{ selected_category.id }}">
+
+            <!-- Main product form fields -->
             {{ product_service_form.as_p }}
-            <button type="submit" name="add_product_service" class="add-btn">Save & Add {{selected_category.name}}</button>
+
+            <!-- Part image upload field (multi-image) -->
+            <label for="id_image">Upload Part Images (you can select multiple):</label>
+            {{ part_form.image }}
+
+            <button type="submit" name="add_product_service" class="add-btn">Save & Add {{ selected_category.name }}</button>
           </form>
         </section>
       {% else %}

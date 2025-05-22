@@ -120,28 +120,37 @@ def product_detail(request, category_slug, product_slug):
         'minitillers': MiniTiller,
         'milling_machines': MillingMachine,
         'harvesting_machines': HarvestingMachine,
-        'planting_machines': PlantingSowingMachine,
+        'planting_and_sowing_-machines': PlantingSowingMachine,
         'threshing_machines': ThreshingMachine,
         'weeding_machines': WeedingMachine,
-        'irrigation_machine' : IrrigationMachine,
+        'irrigation_machines' : IrrigationMachine,
         'other_machines': OtherMachine,
     }
     category = get_object_or_404(Category, slug = category_slug)
-    model_class = CATEGORY_MODEL_MAP.get(category.slug)
+    model_class = CATEGORY_MODEL_MAP.get(category_slug.replace('-', '_'))
     if not model_class:
-        raise Http404("Sorry, Something has gone worng, gong mathey")
+        raise Http404(f"No model found for category '{category_slug}'")
+
     
     product = get_object_or_404(model_class, slug = product_slug, category = category)
+    part_images = product.part_images.all()
+
     filtered_attributes = {
         field.verbose_name: getattr(product, field.name)
         for field in product._meta.fields
-        if getattr(product, field.name) not in [None, "", "other"]
+        if getattr(product, field.name) not in [None, "", "other", "nan"]
     }
 
+    nav = get_nav_context()
+    slug_cat_mapped = get_slug_model_map()
+
     context = {
+        'nav' : nav,
+        'mapped' : slug_cat_mapped,
         "category": category,
         "product": product,
         "attributes": filtered_attributes,
+        'part_images': part_images,
     }
     return render(request, 'face/product_detail.html',  context)
 
@@ -165,21 +174,23 @@ def rnd(request):
 
 
 def contact_us(request):
+    form = ContactForm()
     success = False
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            # Email sending logic (optional)
-            send_mail(
-                subject=form.cleaned_data['subject'],
-                message=f"From: {form.cleaned_data['full_name']} <{form.cleaned_data['email']}>\n\n{form.cleaned_data['message']}",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.DEFAULT_FROM_EMAIL],  # or any recipient
-            )
-            success = True
-            form = ContactForm()  # Reset the form
-    else:
-        form = ContactForm()
+    # success = False
+    # if request.method == 'POST':
+    #     form = ContactForm(request.POST)
+    #     if form.is_valid():
+    #         # Email sending logic (optional)
+    #         send_mail(
+    #             subject=form.cleaned_data['subject'],
+    #             message=f"From: {form.cleaned_data['full_name']} <{form.cleaned_data['email']}>\n\n{form.cleaned_data['message']}",
+    #             from_email=settings.DEFAULT_FROM_EMAIL,
+    #             recipient_list=[settings.DEFAULT_FROM_EMAIL],  # or any recipient
+    #         )
+    #         success = True
+    #         form = ContactForm()  # Reset the form
+    # else:
+    #     form = ContactForm()
     
     nav = get_nav_context()
     slug_cat_mapped = get_slug_model_map()

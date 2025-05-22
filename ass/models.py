@@ -1,10 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericRelation
-
 
 # ---- General Models ---- #
 class BoardOfDirector(models.Model):
@@ -59,7 +55,6 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
-    parts = GenericRelation('ProductParts')
 
     class Meta:
         abstract = True
@@ -148,15 +143,62 @@ class OtherMachine(Product):
     power_required = models.CharField(max_length=100, blank=True, null=True)
     usage = models.CharField(max_length=100, blank=True, null=True)
 
-# ---- Product Parts ---- #
-class ProductParts(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    product = GenericForeignKey('content_type', 'object_id')
-    image = models.ImageField(upload_to='products/parts/')
+# ---- Specific Product Part Models ---- #
+class MiniTillerPart(models.Model):
+    product = models.ForeignKey(MiniTiller, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='mini_tiller_parts/', null=True, blank=True)  # Make image nullable
 
     def __str__(self):
-        return f'Part of {self.content_type} - {self.object_id}'
+        return f"Part Image for {self.product.name} ({self.id})"
+
+class MillingMachinePart(models.Model):
+    product = models.ForeignKey(MillingMachine, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='milling_machine_parts/', null=True, blank=True)  # Make image nullable
+
+    def __str__(self):
+        return f"Part Image for {self.product.name} ({self.id})"
+
+class HarvestingMachinePart(models.Model):
+    product = models.ForeignKey(HarvestingMachine, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='harvesting_machine_parts/', null=True, blank=True)  # Make image nullable
+
+    def __str__(self):
+        return f"Part Image for {self.product.name} ({self.id})"
+
+class PlantingSowingMachinePart(models.Model):
+    product = models.ForeignKey(PlantingSowingMachine, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='planting_sowing_machine_parts/', null=True, blank=True)  # Make image nullable
+
+    def __str__(self):
+        return f"Part Image for {self.product.name} ({self.id})"
+
+class ThreshingMachinePart(models.Model):
+    product = models.ForeignKey(ThreshingMachine, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='threshing_machine_parts/', null=True, blank=True)  # Make image nullable
+
+    def __str__(self):
+        return f"Part Image for {self.product.name} ({self.id})"
+
+class WeedingMachinePart(models.Model):
+    product = models.ForeignKey(WeedingMachine, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='weeding_machine_parts/', null=True, blank=True)  # Make image nullable
+
+    def __str__(self):
+        return f"Part Image for {self.product.name} ({self.id})"
+
+class IrrigationMachinePart(models.Model):
+    product = models.ForeignKey(IrrigationMachine, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='irrigation_machine_parts/', null=True, blank=True)  # Make image nullable
+
+    def __str__(self):
+        return f"Part Image for {self.product.name} ({self.id})"
+
+class OtherMachinePart(models.Model):
+    product = models.ForeignKey(OtherMachine, on_delete=models.CASCADE, related_name='part_images')
+    image = models.ImageField(upload_to='other_machine_parts/', null=True, blank=True)  # Make image nullable
+
+    def __str__(self):
+        return f"Part Image for {self.product.name} ({self.id})"
 
 # ---- Other General Models ---- #
 class Website(models.Model):

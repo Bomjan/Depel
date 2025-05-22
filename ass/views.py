@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
-from .models import Product
 from .models import (
     # people
     BoardOfDirector,
@@ -9,15 +8,15 @@ from .models import (
 
     # products
     Category, 
-    ProductParts,
-    MiniTiller, # 1
-    HarvestingMachine, # 2
+
+    MiniTiller,            # 1
+    HarvestingMachine,     # 2
     PlantingSowingMachine, # 3
-    ThreshingMachine, # 4
-    WeedingMachine, # 5
-    OtherMachine, # 6
-    MillingMachine, # 7
-    IrrigationMachine, # 8
+    ThreshingMachine,      # 4
+    WeedingMachine,        # 5
+    OtherMachine,          # 6
+    MillingMachine,        # 7
+    IrrigationMachine,     # 8
 
     # websites
     Website,
@@ -27,6 +26,8 @@ from .models import (
 )
 
 from .forms import (
+
+    # main forms
     MiniTillerForm, 
     MillingMachineForm, 
     HarvestingMachineForm,
@@ -34,8 +35,21 @@ from .forms import (
     ThreshingMachineForm,
     WeedingMachineForm, 
     IrrigationMachineForm,
-    OtherMachineForm
+    OtherMachineForm,
+
+    # respective forms
+    MiniTillerPartForm, 
+    MillingMachinePartForm, 
+    HarvestingMachinePartForm,
+    PlantingSowingMachinePartForm, 
+    ThreshingMachinePartForm, 
+    WeedingMachinePartForm,
+    IrrigationMachinePartForm, 
+    OtherMachinePartForm
 )
+
+
+
 
 from .forms import (BoardOfDirectorForm, ManagementTeamForm, EmployeeForm, WebsiteForm, CarouselForm)
 from django.contrib.auth.decorators import login_required
@@ -143,10 +157,8 @@ def create_default_categories():
 
 @login_required
 def products_services(request):
-    # Create default categories if they don't exist
     create_default_categories()
 
-    # Category to form/model mapping
     PRODUCT_MAP = {
         'MiniTillers': (MiniTiller, MiniTillerForm),
         'Milling Machines': (MillingMachine, MillingMachineForm),
@@ -158,58 +170,70 @@ def products_services(request):
         'Other Machines': (OtherMachine, OtherMachineForm),
     }
 
+    PART_FORM_MAP = {
+        'MiniTillers': MiniTillerPartForm,
+        'Milling Machines': MillingMachinePartForm,
+        'Harvesting Machines': HarvestingMachinePartForm,
+        'Planting and Sowing Machines': PlantingSowingMachinePartForm,
+        'Threshing Machines': ThreshingMachinePartForm,
+        'Weeding Machines': WeedingMachinePartForm,
+        'Irrigation Machines': IrrigationMachinePartForm,
+        'Other Machines': OtherMachinePartForm,
+    }
+
     categories = Category.objects.all()
     selected_category = None
     products_services = {}
     form = None
+    part_form = None
 
-    # Handle category selection
     if 'category' in request.GET:
         selected_category = get_object_or_404(Category, id=request.GET['category'])
         model_class, form_class = PRODUCT_MAP.get(selected_category.name, (None, None))
+        part_form_class = PART_FORM_MAP.get(selected_category.name)
         
-        if model_class and form_class:
-            products = model_class.objects.filter(category=selected_category).prefetch_related('parts')
+        if model_class and form_class and part_form_class:
+            # products = model_class.objects.filter(category=selected_category).prefetch_related('image_parts')
+            products = model_class.objects.filter(category=selected_category).prefetch_related('part_images')
+
             products_services[selected_category] = products
             form = form_class()
+            part_form = part_form_class()
 
-    # Handle form submissions
-    if request.method == 'POST':
-        # Add new product/service
-        if 'add_product_service' in request.POST:
-            category_id = request.POST.get('category')
-            selected_category = get_object_or_404(Category, id=category_id)
-            model_class, form_class = PRODUCT_MAP.get(selected_category.name, (None, None))
-            
-            if model_class and form_class:
-                form = form_class(request.POST, request.FILES)
-                if form.is_valid():
-                    product = form.save(commit=False)
-                    product.category = selected_category
-                    product.save()
-                    
-                    # Handle multiple images using generic relations
-                    for image in request.FILES.getlist('images'):
-                        ProductParts.objects.create(
-                            content_object=product,
-                            image=image
-                        )
-                    return redirect(f'/ass/products-services/')
+    if request.method == 'POST' and 'add_product_service' in request.POST:
+        category_id = request.POST.get('category')
+        selected_category = get_object_or_404(Category, id=category_id)
+        model_class, form_class = PRODUCT_MAP.get(selected_category.name, (None, None))
+        part_form_class = PART_FORM_MAP.get(selected_category.name)
 
-        # Delete product/service
-        elif 'delete_product_service' in request.POST:
-            content_type_id = request.POST.get('content_type')
-            object_id = request.POST.get('object_id')
-            content_type = ContentType.objects.get_for_id(content_type_id)
-            product = content_type.get_object_for_this_type(pk=object_id)
-            product.delete()
-            return redirect(request.META.get('HTTP_REFERER', '/ass/products-services/'))
+        if model_class and form_class and part_form_class:
+            form = form_class(request.POST, request.FILES)
+            part_form = part_form_class(request.POST, request.FILES)
+
+            if form.is_valid():
+                product = form.save(commit=False)
+                product.category = selected_category
+                product.save()
+
+                for image in request.FILES.getlist('image'):
+                    part_form_class.Meta.model.objects.create(product=product, image=image)
+
+                return redirect(f'/ass/products_services/?category={category_id}')
+
+    elif request.method == 'POST' and 'delete_product_service' in request.POST:
+        content_type_id = request.POST.get('content_type')
+        object_id = request.POST.get('object_id')
+        content_type = ContentType.objects.get_for_id(content_type_id)
+        product = content_type.get_object_for_this_type(pk=object_id)
+        product.delete()
+        return redirect(request.META.get('HTTP_REFERER', '/ass/products_services/'))
 
     context = {
         'categories': categories,
         'selected_category': selected_category,
         'products_services': products_services,
         'product_service_form': form,
+        'part_form': part_form,
     }
     return render(request, 'ass/products_services.html', context)
 

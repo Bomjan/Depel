@@ -8,6 +8,7 @@
     {% load extras%}
     <link rel="stylesheet" href="{% static 'css/styleMyFace.css' %}">
     <link rel="stylesheet" href="{% static 'css/styleMyFaceInfo.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
     
     <script src="{% static 'js/scripts.js' %}" defer></script>
 </head>
@@ -16,8 +17,6 @@
 <div id="loading" class="loading-overlay">
     <div class="spinner"></div>
 </div>
-
-
     <!-- Header -->
     <header>
         <div class="logo">
@@ -54,124 +53,7 @@
                         Products & Services 
                     </a>
                     <div class="dropdown-menu" role="menu">
-                        <div class="msg">
-                            <p><strong>[HELP] :</strong> Double tap and drag it down.</p>
-                        </div>
-                        <!--
-                        <div class="dropdown-grid">
-                            
-                            
-                            <section class="dropdown-column" aria-labelledby="minitillers-heading">
-                                <h3 id="minitillers-heading" class="category-title">Mini Tillers</h3>
-                                <ul role="none">
-                                    {% for product in minitillers %}
-                                        <li role="none">
-                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section>
-                
-                            
-                            <section class="dropdown-column" aria-labelledby="millingmachines-heading">
-                                <h3 id="millingmachines-heading" class="category-title">Milling Machines</h3>
-                                <ul role="none">
-                                    {% for product in milling_machines %}
-                                        <li role="none">
-                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section>
-                
-                            
-                            <section class="dropdown-column" aria-labelledby="harvestingmachines-heading">
-                                <h3 id="harvestingmachines-heading" class="category-title">Harvesting Machines</h3>
-                                <ul role="none">
-                                    {% for product in harvesting_machines %}
-                                        <li role="none">
-                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section>
-                
-                            
-                            <section class="dropdown-column" aria-labelledby="plantingmachines-heading">
-                                <h3 id="plantingmachines-heading" class="category-title">Planting and Sowing Machines</h3>
-                                <ul role="none">
-                                    {% for product in planting_machines %}
-                                        <li role="none">
-                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section>
-                
-                            
-                            <section class="dropdown-column" aria-labelledby="threshingmachines-heading">
-                                <h3 id="threshingmachines-heading" class="category-title">Threshing Machines</h3>
-                                <ul role="none">
-                                    {% for product in threshing_machines %}
-                                        <li role="none">
-                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section>
-                
-                            
-                            <section class="dropdown-column" aria-labelledby="weedingmachines-heading">
-                                <h3 id="weedingmachines-heading" class="category-title">Weeding Machines</h3>
-                                <ul role="none">
-                                    {% for product in weeding_machines %}
-                                        <li role="none">
-                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section>
-
-                            
-                            <section class="dropdown-column" aria-labelledby="weedingmachines-heading">
-                                <h3 id="weedingmachines-heading" class="category-title">Weeding Machines</h3>
-                                <ul role="none">
-                                    {% for product in irrigation_machine %}
-                                        <li role="none">
-                                            <a href="/products/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section>
-                
-                            
-                            <section class="dropdown-column" aria-labelledby="othermachines-heading">
-                                <h3 id="othermachines-heading" class="category-title">Other Machines</h3>
-                                <ul role="none">
-                                    {% for product in other_machines %}
-                                        <li role="none">
-                                            <a href="/product_detail/{{ product.slug }}" role="menuitem" tabindex="-1">{{ product.name }}</a>
-                                        </li>
-                                    {% empty %}
-                                        <li>No products available.</li>
-                                    {% endfor %}
-                                </ul>
-                            </section> -->
-                            
+                        <div>                            
                             <div class="dropdown-grid">
                                 {% for key, products in nav.items %}
                                     <section class="dropdown-column" aria-labelledby="{{ key }}-heading">
@@ -199,7 +81,62 @@
                     </div>
                 </li>
                 
-                <li><a href="/rnd">R&D</a></li>
+                <li><a href="/rnd">RnD</a></li>
+                <li class="dropdown business" aria-haspopup="true" aria-expanded="false">
+                    <a href="#" class="line-trigger">
+                        Line of business
+                    </a>
+                    <div>                         
+                        <div >
+                            <div class="line-of-business dropdown-menu" style="padding: 2px; background-color: rgba(204, 233, 207, 0.86);">
+                                <h3 style="border: none; ">Our Line of Business</h3>
+                                <ul style="display: flex; flex-direction: column; padding: 2px;">
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img1.png' %}" alt="Sales and Service">
+                                        Providing 3S (Sales, Services & Spare Parts) for agricultural machinery, equipment & tools
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img4.png' %}" alt="Logistics">
+                                        Global clearing and forwarding, shipping and logistics
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img2.png' %}" alt="Mini Tiller">
+                                        Mini Tiller Assembling & Accessories Fabrication
+                                    </a>
+                                    <a class="business-item " style="border: none;" href="https://dit.bt">
+                                        <img src="{% static 'images/img8.png' %}" alt="Training">
+                                        Training and Development
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img3.png' %}" alt="Pharmaceutical Goods">
+                                        Trading Pharmaceutical, Medical & Orthopaedic Goods
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img10.png' %}" alt="Lubricants">
+                                        Wholesale of Lubricants
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img9.png' %}" alt="Construction">
+                                        Construction
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img7.png' %}" alt="Ticketing">
+                                        Ticketing Agent
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img5.png' %}" alt="ICT Business">
+                                        ICT Business (Trading, development and implementation of software, Security Solution, Electronic Components, etc.)
+                                    </a>
+                                    <a class="business-item " style="border: none;">
+                                        <img src="{% static 'images/img6.png' %}" alt="Travel">
+                                        Travel Agent
+                                    </a>
+                                </ul>
+                            </div>   
+                        </div>
+                    </div>
+                    <div></div>
+                </li>
                 <li><a href="/contact_us">Contact Us</a></li>
             </ul>
         </nav>
@@ -234,7 +171,7 @@
         <div class="footer-column">
             <h3>Contact Us</h3>
             <ul>
-                <li>Email: depel.info.com</li>
+                <li>Email: depel</li>
                 <li>Phone: 17######</li>
                 <li>Address: Babena | Thimphu</li>
             </ul>
