@@ -37,7 +37,7 @@ SHEET_TO_CATEGORY = {
     'OtherMachine': 'Other Machines',
 }
 
-file_path = r"C:\Users\Dell\OneDrive\Desktop\dpp.xlsx"
+file_path = r"C:\\Users\Dell\\OneDrive\\Desktop\\dpp.xlsx"
 
 def import_products_from_excel(file_path):
     try:

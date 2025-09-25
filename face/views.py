@@ -4,7 +4,7 @@ from ass.models import Product, Carousel, Employee, BoardOfDirector, ManagementT
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 from ass.forms import ContactForm
 from django.conf import settings
 
@@ -59,7 +59,7 @@ def index(request):
 
     context = {
         'nav': nav,
-        'carousel': {'carousel_images': carousel_images},
+        'carousel_images': carousel_images,
         'mapped': slug_cat_mapped,
     }
     return render(request, 'face/index.html', context)
