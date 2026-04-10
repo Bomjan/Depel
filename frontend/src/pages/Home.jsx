@@ -49,7 +49,7 @@ function HeroCarousel({ images }) {
   return (
     <section className="hero" aria-label="Featured machinery slideshow">
       {images.map((img, i) => (
-        <div key={img.id} className={`hero-slide ${i === active ? 'active' : ''}`} aria-hidden={i !== active}>
+        <div key={`${img.id ?? 'slide'}-${i}`} className={`hero-slide ${i === active ? 'active' : ''}`} aria-hidden={i !== active}>
           <img src={imgSrc(img.image)} alt={`Carousel slide ${i + 1}`} className="hero-img" />
           <div className="hero-overlay" />
         </div>
