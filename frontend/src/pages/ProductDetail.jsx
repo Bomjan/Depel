@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { api } from '../api'
 import Loader from '../components/Loader'
+import { XCircleIcon } from '../components/Icons'
 
 const FALLBACK = '/placeholder.svg'
 
@@ -35,7 +36,7 @@ export default function ProductDetail() {
     return (
       <main className="page-wrapper">
         <div className="container section empty-state">
-          <div className="empty-state-icon">&#10007;</div>
+          <div className="empty-state-icon" aria-hidden="true"><XCircleIcon size={56} /></div>
           <h2>Product not found</h2>
           <p>This product may have been removed or the URL is incorrect.</p>
           <Link to="/catalog" className="btn btn-primary" style={{ marginTop: 'var(--space-xl)' }}>

@@ -6,15 +6,11 @@ export default function Navbar() {
   const [scrolled, setScrolled]     = useState(false)
   const [menuOpen, setMenuOpen]     = useState(false)
   const [navData, setNavData]       = useState([])
-  const [openDropdown, setOpenDropdown] = useState(null) // category slug (mobile)
-  const [productsOpen, setProductsOpen] = useState(false)
   const [productQuery, setProductQuery] = useState('')
   const location = useLocation()
 
   const closeMenu = () => {
     setMenuOpen(false)
-    setOpenDropdown(null)
-    setProductsOpen(false)
     setProductQuery('')
   }
 
@@ -49,10 +45,6 @@ export default function Navbar() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [menuOpen])
 
-  const handleDropdownToggle = (slug) => {
-    setOpenDropdown(prev => prev === slug ? null : slug)
-  }
-
   const allProducts = navData.flatMap(cat =>
     (cat.products || []).map(p => ({
       ...p,
@@ -74,6 +66,88 @@ export default function Navbar() {
           <span className="nav-logo-text">De<span>pel</span></span>
         </Link>
 
+        {/* Desktop navigation */}
+        <ul className="nav-links" role="menubar" aria-label="Primary">
+          <li role="none">
+            <NavLink
+              to="/"
+              end
+              role="menuitem"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Home
+            </NavLink>
+          </li>
+
+          <li role="none" className="nav-dropdown">
+            <button
+              type="button"
+              role="menuitem"
+              aria-haspopup="true"
+              className="nav-link"
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            >
+              Products ▾
+            </button>
+            <div className="nav-dropdown-menu" role="menu">
+              <div className="nav-dropdown-header">Browse categories</div>
+              {navData.length === 0 ? (
+                <span className="nav-dropdown-item" style={{ color: 'var(--text-muted)' }}>
+                  Loading…
+                </span>
+              ) : (
+                navData.map(cat => (
+                  <NavLink
+                    key={cat.slug}
+                    to={`/catalog?cat=${cat.slug}`}
+                    role="menuitem"
+                    className="nav-dropdown-item"
+                  >
+                    {cat.name}
+                  </NavLink>
+                ))
+              )}
+            </div>
+          </li>
+
+          <li role="none">
+            <NavLink
+              to="/catalog"
+              role="menuitem"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Catalog
+            </NavLink>
+          </li>
+          <li role="none">
+            <NavLink
+              to="/people"
+              role="menuitem"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              People
+            </NavLink>
+          </li>
+          <li role="none">
+            <NavLink
+              to="/rnd"
+              role="menuitem"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              R&amp;D
+            </NavLink>
+          </li>
+          <li role="none">
+            <NavLink
+              to="/contact"
+              role="menuitem"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Contact
+            </NavLink>
+          </li>
+        </ul>
+
         {/* Mobile scrim */}
         {menuOpen && (
           <button
@@ -83,129 +157,55 @@ export default function Navbar() {
           />
         )}
 
-        {/* Links (desktop = inline, mobile = drawer) */}
+        {/* Mobile menu (simple, readable, iOS-glass modal) */}
         <div className={`nav-drawer ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
-          <div className="nav-drawer-header">
-            <Link to="/" className="nav-logo" aria-label="Depel home" onClick={closeMenu}>
-              <div className="nav-logo-mark">D</div>
-              <span className="nav-logo-text">De<span>pel</span></span>
-            </Link>
-            <button className="nav-close" aria-label="Close menu" onClick={closeMenu} type="button">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-
           <div className="nav-mobile" aria-label="Mobile navigation">
-            <ul id="nav-links" className="nav-mobile-primary" role="menubar">
-              <li role="none">
-                <NavLink
-                  to="/"
-                  end
-                  role="menuitem"
-                  className={({ isActive }) => `nav-mobile-link ${isActive ? 'active' : ''}`}
-                  onClick={closeMenu}
-                >
-                  Home
-                </NavLink>
-              </li>
+            <div className="nav-mobile-top">
+              <div className="nav-mobile-title">Menu</div>
+              <button className="nav-close" aria-label="Close menu" onClick={closeMenu} type="button">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
 
-              <li role="none">
-                <button
-                  className={`nav-mobile-link nav-mobile-accordion ${productsOpen ? 'open' : ''}`}
-                  type="button"
-                  aria-expanded={productsOpen}
-                  onClick={() => setProductsOpen(v => !v)}
-                >
-                  <span>Products</span>
-                  <span className="nav-chevron" aria-hidden="true">▾</span>
-                </button>
+            <div className="nav-mobile-search">
+              <input
+                className="nav-mobile-search-input"
+                type="search"
+                placeholder="Search products…"
+                value={productQuery}
+                onChange={(e) => setProductQuery(e.target.value)}
+                aria-label="Search products"
+              />
+            </div>
 
-                {productsOpen && (
-                  <div className="nav-mobile-panel">
-                    <div className="nav-mobile-search">
-                      <input
-                        className="nav-mobile-search-input"
-                        type="search"
-                        placeholder="Search products..."
-                        value={productQuery}
-                        onChange={(e) => setProductQuery(e.target.value)}
-                        aria-label="Search products"
-                      />
-                    </div>
+            <div className="nav-mobile-section">
+              <div className="nav-mobile-section-title">Quick links</div>
+              <div className="nav-mobile-grid">
+                <NavLink to="/catalog" className="nav-mobile-chip" onClick={closeMenu}>Catalog</NavLink>
+                <NavLink to="/people" className="nav-mobile-chip" onClick={closeMenu}>People</NavLink>
+                <NavLink to="/rnd" className="nav-mobile-chip" onClick={closeMenu}>R&amp;D</NavLink>
+                <NavLink to="/contact" className="nav-mobile-chip" onClick={closeMenu}>Contact</NavLink>
+              </div>
+            </div>
 
-                    <div className="nav-mobile-cats">
-                      {navData.map(cat => (
-                        <div key={cat.slug} className="nav-mobile-cat">
-                          <button
-                            className={`nav-mobile-cat-btn ${openDropdown === cat.slug ? 'open' : ''}`}
-                            type="button"
-                            onClick={() => handleDropdownToggle(cat.slug)}
-                            aria-expanded={openDropdown === cat.slug}
-                          >
-                            <span>{cat.name}</span>
-                            <span className="nav-chevron" aria-hidden="true">▾</span>
-                          </button>
-
-                          {openDropdown === cat.slug && (
-                            <div className="nav-mobile-cat-items">
-                              {(cat.products || []).length === 0 ? (
-                                <div className="nav-mobile-item muted">No products</div>
-                              ) : (
-                                (cat.products || [])
-                                  .filter(p => !productQuery || p.name?.toLowerCase().includes(productQuery.toLowerCase()))
-                                  .slice(0, 10)
-                                  .map(p => (
-                                    <NavLink
-                                      key={`${cat.slug}-${p.slug}`}
-                                      to={`/products/${cat.slug}/${p.slug}`}
-                                      className="nav-mobile-item"
-                                      onClick={closeMenu}
-                                    >
-                                      {p.name}
-                                    </NavLink>
-                                  ))
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-                    {filteredProducts.length > 0 && (
-                      <div className="nav-mobile-hint">
-                        Showing {filteredProducts.length} match{filteredProducts.length !== 1 ? 'es' : ''}. Use Catalog for full browsing.
-                      </div>
-                    )}
-                  </div>
+            <div className="nav-mobile-section">
+              <div className="nav-mobile-section-title">Products</div>
+              <div className="nav-mobile-list" role="list">
+                {(filteredProducts.length ? filteredProducts : allProducts).slice(0, 18).map(p => (
+                  <NavLink
+                    key={`${p.categorySlug}-${p.slug}`}
+                    to={`/products/${p.categorySlug}/${p.slug}`}
+                    className="nav-mobile-row"
+                    onClick={closeMenu}
+                  >
+                    <span className="nav-mobile-row-title">{p.name}</span>
+                    <span className="nav-mobile-row-meta">{p.categoryName}</span>
+                  </NavLink>
+                ))}
+                {allProducts.length === 0 && (
+                  <div className="nav-mobile-row muted">Loading products…</div>
                 )}
-              </li>
-
-              <li role="none">
-                <NavLink to="/catalog" role="menuitem" className={({ isActive }) => `nav-mobile-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
-                  Catalog
-                </NavLink>
-              </li>
-              <li role="none">
-                <NavLink to="/people" role="menuitem" className={({ isActive }) => `nav-mobile-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
-                  People
-                </NavLink>
-              </li>
-              <li role="none">
-                <NavLink to="/rnd" role="menuitem" className={({ isActive }) => `nav-mobile-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
-                  R&D
-                </NavLink>
-              </li>
-              <li role="none">
-                <NavLink to="/contact" role="menuitem" className={({ isActive }) => `nav-mobile-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
-                  Contact
-                </NavLink>
-              </li>
-            </ul>
-
-            <div className="nav-mobile-footer">
-              <Link to="/contact" className="btn btn-accent" onClick={closeMenu} style={{ width: '100%', justifyContent: 'center' }}>
-                Get a Quote / Enquiry
-              </Link>
+              </div>
             </div>
           </div>
         </div>

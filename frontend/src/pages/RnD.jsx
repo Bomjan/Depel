@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { api } from '../api'
 import Loader from '../components/Loader'
+import { VideoIcon } from '../components/Icons'
 
 const FALLBACK = '/placeholder.svg'
 
@@ -43,7 +44,7 @@ export default function RnD() {
             <Loader text="Loading videos..." />
           ) : videos.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-state-icon">&#127909;</div>
+              <div className="empty-state-icon" aria-hidden="true"><VideoIcon size={56} /></div>
               <h3>No videos yet</h3>
               <p>Check back soon for R&D demonstrations and field trials.</p>
             </div>
@@ -75,7 +76,7 @@ export default function RnD() {
                           color: 'var(--text-muted)',
                           fontSize: '2rem',
                         }}>
-                          &#127909;
+                          <VideoIcon size={44} />
                         </div>
                       )}
                     </div>

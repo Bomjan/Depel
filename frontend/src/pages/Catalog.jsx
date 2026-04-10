@@ -1,8 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { api } from '../api'
 import Loader from '../components/Loader'
 import ProductCard from '../components/ProductCard'
+import { SearchIcon, XIcon } from '../components/Icons'
+
+function normalize(s) {
+  return (s ?? '')
+    .toString()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '') // strip diacritics
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+}
 
 export default function Catalog() {
   const [navData, setNavData]           = useState([])
@@ -34,11 +45,20 @@ export default function Catalog() {
     ? navData
     : navData.filter(c => c.slug === activeSlug)
 
-  const filtered = filteredCategories.flatMap(cat =>
-    (cat.products || [])
-      .filter(p => !query || p.name.toLowerCase().includes(query.toLowerCase()))
-      .map(p => ({ ...p, categoryName: cat.name, categorySlug: cat.slug }))
-  )
+  const filtered = useMemo(() => {
+    const q = normalize(query)
+    const tokens = q ? q.split(/\s+/).filter(Boolean) : []
+
+    return filteredCategories.flatMap(cat =>
+      (cat.products || [])
+        .map(p => ({ ...p, categoryName: cat.name, categorySlug: cat.slug }))
+        .filter(p => {
+          if (!tokens.length) return true
+          const hay = `${normalize(p.name)} ${normalize(p.categoryName)}`
+          return tokens.every(t => hay.includes(t))
+        })
+    )
+  }, [filteredCategories, query])
 
   const totalCount = navData.flatMap(c => c.products || []).length
 
@@ -59,15 +79,38 @@ export default function Catalog() {
         <div className="container">
           {/* Search bar */}
           <div style={{ marginBottom: 'var(--space-xl)', maxWidth: 480 }}>
-            <input
-              type="search"
-              id="catalog-search"
-              className="form-input"
-              placeholder="Search machines..."
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              aria-label="Search products"
-            />
+            <form
+              className="search-field"
+              onSubmit={(e) => e.preventDefault()}
+              role="search"
+              aria-label="Search catalog"
+            >
+              <span className="search-field-icon" aria-hidden="true">
+                <SearchIcon size={18} />
+              </span>
+              <input
+                type="search"
+                id="catalog-search"
+                className="search-field-input"
+                placeholder="Search machines..."
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                aria-label="Search products"
+              />
+              {query && (
+                <button
+                  type="button"
+                  className="search-field-clear"
+                  onClick={() => setQuery('')}
+                  aria-label="Clear search"
+                >
+                  <XIcon size={18} />
+                </button>
+              )}
+              <button type="submit" className="search-field-btn" aria-label="Search">
+                <SearchIcon size={18} />
+              </button>
+            </form>
           </div>
 
           {/* Category pills */}
@@ -100,7 +143,7 @@ export default function Catalog() {
               {/* Results */}
               {filtered.length === 0 ? (
                 <div className="empty-state">
-                  <div className="empty-state-icon">&#128269;</div>
+                  <div className="empty-state-icon" aria-hidden="true"><SearchIcon size={56} /></div>
                   <h3>No machines found</h3>
                   <p>Try a different category or search term.</p>
                 </div>

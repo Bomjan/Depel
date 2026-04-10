@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PinIcon, PhoneIcon, MailIcon, ClockIcon } from '../components/Icons'
 
 function validate(fields) {
   const errors = {}
@@ -63,7 +64,7 @@ export default function ContactUs() {
               </p>
 
               <div className="contact-detail">
-                <div className="contact-detail-icon">&#128205;</div>
+                <div className="contact-detail-icon" aria-hidden="true"><PinIcon size={22} /></div>
                 <div className="contact-detail-text">
                   <strong>Address</strong>
                   <span>Thimphu, Bhutan</span>
@@ -71,7 +72,7 @@ export default function ContactUs() {
               </div>
 
               <div className="contact-detail">
-                <div className="contact-detail-icon">&#128222;</div>
+                <div className="contact-detail-icon" aria-hidden="true"><PhoneIcon size={22} /></div>
                 <div className="contact-detail-text">
                   <strong>Phone</strong>
                   <span>+975 17 123 456</span>
@@ -79,7 +80,7 @@ export default function ContactUs() {
               </div>
 
               <div className="contact-detail">
-                <div className="contact-detail-icon">&#9993;</div>
+                <div className="contact-detail-icon" aria-hidden="true"><MailIcon size={22} /></div>
                 <div className="contact-detail-text">
                   <strong>Email</strong>
                   <span>info@depel.bt</span>
@@ -87,7 +88,7 @@ export default function ContactUs() {
               </div>
 
               <div className="contact-detail">
-                <div className="contact-detail-icon">&#128336;</div>
+                <div className="contact-detail-icon" aria-hidden="true"><ClockIcon size={22} /></div>
                 <div className="contact-detail-text">
                   <strong>Office Hours</strong>
                   <span>Mon – Fri, 9 AM – 5 PM</span>

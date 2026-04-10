@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { api } from '../api'
 import Loader from '../components/Loader'
 import PersonCard from '../components/PersonCard'
+import { UsersIcon } from '../components/Icons'
 
 export default function People() {
   const [data, setData]     = useState(null)
@@ -75,7 +76,7 @@ export default function People() {
               <Loader text="Loading team..." />
             ) : !people || people.length === 0 ? (
               <div className="empty-state">
-                <div className="empty-state-icon">&#128100;</div>
+                <div className="empty-state-icon" aria-hidden="true"><UsersIcon size={56} /></div>
                 <h3>No records found</h3>
               </div>
             ) : (

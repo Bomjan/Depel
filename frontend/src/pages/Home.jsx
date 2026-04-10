@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import Loader from '../components/Loader'
 import ProductCard from '../components/ProductCard'
+import { GearIcon } from '../components/Icons'
 
 const FALLBACK = '/placeholder.svg'
 
@@ -151,7 +152,7 @@ export default function Home() {
             <Loader text="Loading products..." />
           ) : allProducts.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-state-icon">&#9881;</div>
+              <div className="empty-state-icon" aria-hidden="true"><GearIcon size={56} /></div>
               <h3>No products found</h3>
               <p>Make sure the backend is running on port 8000.</p>
             </div>
@@ -216,7 +217,7 @@ export default function Home() {
                   fontSize: '1.4rem',
                   marginBottom: 'var(--space-sm)',
                 }}>
-                  &#9881;
+                  <GearIcon size={26} />
                 </div>
                 <h3 style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{cat.name}</h3>
                 <p style={{ fontSize: '0.85rem', margin: 0 }}>{cat.products.length} product{cat.products.length !== 1 ? 's' : ''}</p>
